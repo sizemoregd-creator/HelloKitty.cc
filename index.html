@@ -1,292 +1,49 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>HelloKitty.cc</title>
+  <title>HOA Coming Soon</title>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
-
     body {
       margin: 0;
       height: 100vh;
-      overflow: hidden;
-      font-family: 'Press Start 2P', cursive;
-      background-color: black;
-      color: #00ff00;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      perspective: 1000px;
-      position: relative;
+      background: black;
+      color: #00ff00;
+      font-family: 'Press Start 2P', cursive;
     }
-
-    canvas {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: 0;
+    .back-btn {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      padding: 10px 20px;
+      border: 2px solid #00ff00;
+      color: #00ff00;
+      background: rgba(0,0,0,0.7);
+      font-family: 'Courier New', monospace;
+      border-radius: 5px;
+      cursor: pointer;
+      text-align: center;
     }
-
+    .back-btn:hover {
+      box-shadow: 0 0 20px #00ff00;
+    }
     h1 {
       font-size: 2em;
       text-shadow: 0 0 10px #00ff00;
-      margin-bottom: 20px;
-      animation: glow 2s infinite alternate;
-      z-index: 2;
-      text-align: center;
-    }
-
-    @keyframes glow {
-      from { text-shadow: 0 0 10px #00ff00; }
-      to { text-shadow: 0 0 20px #00ff00, 0 0 40px #00ff00; }
-    }
-
-    .boxes {
-      display: flex;
-      gap: 50px;
-      z-index: 2;
-    }
-
-    .display-box {
-      width: 200px;
-      padding: 15px;
-      background: rgba(0, 0, 0, 0.7);
-      border: 2px solid #00ff00;
-      border-radius: 5px;
-      box-shadow: 0 0 15px #00ff00;
-      color: #00ff00;
-      text-align: center;
-      font-size: 14px;
-      user-select: none;
-      cursor: pointer;
-      pointer-events: auto;
-      animation: textglow 3s infinite alternate;
-      font-family: 'Courier New', monospace;
-      transition: transform 0.3s, box-shadow 0.3s;
-    }
-
-    .display-box:hover {
-      transform: scale(1.05);
-      box-shadow: 0 0 30px #00ff00, 0 0 50px #c0ffc0;
-    }
-
-    @keyframes textglow {
-      from { text-shadow: 0 0 5px #00ff00; color: #00ff00; }
-      to { text-shadow: 0 0 15px #00ff00, 0 0 30px #00ff00; color: #c0ffc0; }
-    }
-
-    .sparkle {
-      position: absolute;
-      width: 6px;
-      height: 6px;
-      background: #00ff00;
-      border-radius: 50%;
-      box-shadow: 0 0 10px #00ff00;
-      animation: sparkleAnim 3s infinite;
-    }
-
-    @keyframes sparkleAnim {
-      0% { opacity: 0; transform: translateY(0) rotate(0deg); }
-      50% { opacity: 1; transform: translateY(-20px) rotate(180deg); }
-      100% { opacity: 0; transform: translateY(0) rotate(360deg); }
-    }
-
-    /* Modal styles */
-    .modal {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0,0,0,0.8);
-      z-index: 10;
-      justify-content: center;
-      align-items: center;
-    }
-
-    .modal-content {
-      background: rgba(0,0,0,0.9);
-      border: 2px solid #00ff00;
-      padding: 30px;
-      border-radius: 10px;
-      color: #00ff00;
-      font-family: 'Courier New', monospace;
-      text-align: center;
-      position: relative;
-      box-shadow: 0 0 30px #00ff00;
-    }
-
-    .close-btn {
-      position: absolute;
-      top: 10px;
-      right: 15px;
-      font-size: 18px;
-      cursor: pointer;
-      color: #00ff00;
-      font-weight: bold;
-    }
-
-    .close-btn:hover {
-      color: #c0ffc0;
-    }
-
-    /* YouTube iframe background */
-    #bgMusic {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 0;
-      height: 0;
-      pointer-events: none;
-    }
-
-    /* Optional unmute button */
-    .unmute-btn {
-      position: fixed;
-      bottom: 60px;
-      right: 20px;
-      z-index: 20;
-      padding: 10px 20px;
-      border: 2px solid #00ff00;
-      color: #00ff00;
-      background: rgba(0,0,0,0.7);
-      cursor: pointer;
-      font-family: 'Courier New', monospace;
-      border-radius: 5px;
-      text-align: center;
-    }
-    .unmute-btn:hover {
-      background: rgba(0,0,0,0.9);
-      box-shadow: 0 0 20px #00ff00;
-    }
-
-    /* Music warning */
-    .music-warning {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      z-index: 20;
-      padding: 10px 20px;
-      border: 2px solid #00ff00;
-      color: #00ff00;
-      background: rgba(0,0,0,0.7);
-      font-family: 'Courier New', monospace;
-      border-radius: 5px;
-      text-align: center;
     }
   </style>
 </head>
 <body>
-  <!-- Matrix-style code rain -->
-  <canvas id="matrix"></canvas>
-
-  <h1>HelloKitty.cc</h1>
-
-  <div class="boxes">
-    <div class="display-box" onclick="showOwners()">Owners</div>
-    <div class="display-box">Rtf The Larp</div>
-  </div>
-
-  <!-- Sparkles -->
-  <div class="sparkle" style="top:10%; left:20%; animation-delay:0s;"></div>
-  <div class="sparkle" style="top:30%; left:70%; animation-delay:1s;"></div>
-  <div class="sparkle" style="top:60%; left:40%; animation-delay:2s;"></div>
-  <div class="sparkle" style="top:80%; left:80%; animation-delay:3s;"></div>
-
-  <!-- Modal -->
-  <div class="modal" id="ownersModal">
-    <div class="modal-content">
-      <span class="close-btn" onclick="closeModal()">&times;</span>
-      <h2>Owners</h2>
-      <p>NetGov</p>
-      <p>NetGov Jr</p>
-    </div>
-  </div>
-
-  <!-- YouTube background music (muted autoplay) -->
-  <iframe id="bgMusic" src="https://www.youtube.com/embed/xeNf2EKkpi4?autoplay=1&loop=1&playlist=xeNf2EKkpi4&mute=1" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-
-  <!-- Optional unmute button -->
-  <div class="unmute-btn" onclick="unmuteMusic()">Unmute Music</div>
-
-  <!-- Music warning -->
-  <div class="music-warning" id="musicWarning">
-    It might take a minute for music to start
-  </div>
-
-  <script>
-    // Matrix code rain
-    const canvas = document.getElementById('matrix');
-    const ctx = canvas.getContext('2d');
-
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-
-    const letters = '01ABCDEFGHIJKLMNOPQRSTUVWXYZ@#$%^&*()*&^%';
-    const fontSize = 16;
-    const columns = canvas.width / fontSize;
-    const drops = Array(Math.floor(columns)).fill(1);
-
-    function draw() {
-      ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-      ctx.fillStyle = '#00ff00';
-      ctx.font = fontSize + 'px monospace';
-
-      for (let i = 0; i < drops.length; i++) {
-        const text = letters[Math.floor(Math.random() * letters.length)];
-        ctx.fillText(text, i * fontSize, drops[i] * fontSize);
-
-        if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
-          drops[i] = 0;
-        }
-
-        drops[i]++;
-      }
-    }
-
-    setInterval(draw, 50);
-    window.addEventListener('resize', () => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-    });
-
-    // Modal functions
-    const modal = document.getElementById('ownersModal');
-
-    function showOwners() {
-      modal.style.display = 'flex';
-    }
-
-    function closeModal() {
-      modal.style.display = 'none';
-    }
-
-    window.onclick = function(event) {
-      if (event.target === modal) {
-        modal.style.display = 'none';
-      }
-    }
-
-    // Unmute YouTube
-    function unmuteMusic() {
-      const iframe = document.getElementById('bgMusic');
-      const src = iframe.src;
-      if(src.includes('mute=1')) {
-        iframe.src = src.replace('mute=1','mute=0');
-      }
-      document.querySelector('.unmute-btn').style.display = 'none';
-      document.getElementById('musicWarning').style.display = 'none';
-    }
-  </script>
+  <div class="back-btn" onclick="window.history.back()">Back</div>
+  <h1>Coming Soon</h1>
 </body>
 </html>
+
 
 
 
