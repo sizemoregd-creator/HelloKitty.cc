@@ -11,80 +11,92 @@
       margin: 0;
       height: 100vh;
       overflow: hidden;
+      font-family: 'Press Start 2P', cursive;
+      background-color: black; /* hacker vibe */
+      color: #00ff00; /* terminal green */
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      font-family: 'Press Start 2P', cursive;
-      color: #d0a8ff;
-      background-color: cyan;
       perspective: 1000px;
       position: relative;
     }
 
-    /* Glowing title */
+    /* Hacker code rain canvas */
+    canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+    }
+
     h1 {
       font-size: 2em;
-      text-shadow: 0 0 15px #b84cff, 0 0 30px #b84cff;
-      margin-bottom: 40px;
+      text-shadow: 0 0 10px #00ff00;
+      margin-bottom: 20px;
       animation: glow 2s infinite alternate;
-      position: relative;
       z-index: 2;
+      text-align: center;
     }
 
     @keyframes glow {
-      from { text-shadow: 0 0 10px #b84cff; }
-      to { text-shadow: 0 0 25px #e6b3ff, 0 0 40px #b84cff; }
+      from { text-shadow: 0 0 10px #00ff00; }
+      to { text-shadow: 0 0 20px #00ff00, 0 0 40px #00ff00; }
     }
 
-    /* Boxes */
+    /* Side-by-side boxes */
+    .boxes {
+      display: flex;
+      gap: 50px;
+      z-index: 2;
+    }
+
     .display-box {
-      width: 300px;
-      padding: 12px;
-      margin-bottom: 20px;
-      background: rgba(0, 0, 0, 0.5);
-      border: 2px solid #b84cff;
-      border-radius: 15px;
-      box-shadow: 0 0 15px #b84cff;
-      color: #fff;
+      width: 200px;
+      padding: 15px;
+      background: rgba(0, 0, 0, 0.7);
+      border: 2px solid #00ff00;
+      border-radius: 5px;
+      box-shadow: 0 0 15px #00ff00;
+      color: #00ff00;
       text-align: center;
       font-size: 14px;
       user-select: none;
       pointer-events: none;
       animation: textglow 3s infinite alternate;
-      z-index: 2;
-      transition: transform 0.3s, box-shadow 0.3s;
-    }
-
-    .display-box:hover {
-      transform: scale(1.05) rotate(-2deg);
-      box-shadow: 0 0 30px #b84cff, 0 0 50px #e6b3ff;
-    }
-
-    .display-box.secondary {
-      border-color: #4cffb8;
-      box-shadow: 0 0 15px #4cffb8;
-      animation: textglow2 3s infinite alternate;
+      font-family: 'Courier New', monospace;
     }
 
     @keyframes textglow {
-      from { text-shadow: 0 0 5px #b84cff; color: #cfa6ff; }
-      to { text-shadow: 0 0 25px #e6b3ff, 0 0 40px #b84cff; color: #fff; }
+      from { text-shadow: 0 0 5px #00ff00; color: #00ff00; }
+      to { text-shadow: 0 0 15px #00ff00, 0 0 30px #00ff00; color: #c0ffc0; }
     }
 
-    @keyframes textglow2 {
-      from { text-shadow: 0 0 5px #4cffb8; color: #a6fff2; }
-      to { text-shadow: 0 0 25px #80fff0, 0 0 40px #4cffb8; color: #fff; }
+    /* Floating hacker-style symbols */
+    .symbol {
+      position: absolute;
+      color: #00ff00;
+      font-size: 14px;
+      user-select: none;
+      opacity: 0.2;
+      animation: floatSymbol linear infinite;
     }
 
-    /* Sparkles */
+    @keyframes floatSymbol {
+      0% { transform: translateY(100vh) rotate(0deg); }
+      100% { transform: translateY(-100vh) rotate(360deg); }
+    }
+
+    /* Sparkles for cyber vibes */
     .sparkle {
       position: absolute;
       width: 6px;
       height: 6px;
-      background: white;
+      background: #00ff00;
       border-radius: 50%;
-      box-shadow: 0 0 10px #fff;
+      box-shadow: 0 0 10px #00ff00;
       animation: sparkleAnim 3s infinite;
     }
 
@@ -93,46 +105,18 @@
       50% { opacity: 1; transform: translateY(-20px) rotate(180deg); }
       100% { opacity: 0; transform: translateY(0) rotate(360deg); }
     }
-
-    /* Floating shapes background */
-    .shape {
-      position: absolute;
-      width: 40px;
-      height: 40px;
-      background: linear-gradient(45deg, #b84cff, #4cffb8);
-      opacity: 0.3;
-      border-radius: 50%;
-      animation: floatShape linear infinite;
-    }
-
-    @keyframes floatShape {
-      0% { transform: translateY(100vh) rotate(0deg); }
-      100% { transform: translateY(-100vh) rotate(360deg); }
-    }
-
-    .overlay {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 30, 0.2);
-      z-index: 1;
-    }
-
   </style>
 </head>
 <body>
-  <div class="overlay"></div>
-  <h1>HelloKitty.cc</h1>
-  <div class="display-box">LLJVR</div>
-  <div class="display-box secondary">Rtf The Larp</div>
+  <!-- Matrix-style code rain -->
+  <canvas id="matrix"></canvas>
 
-  <!-- Background music -->
-  <audio autoplay loop>
-    <source src="chill-music.mp3" type="audio/mpeg">
-    Your browser does not support the audio element.
-  </audio>
+  <h1>HelloKitty.cc</h1>
+
+  <div class="boxes">
+    <div class="display-box">LLJVR</div>
+    <div class="display-box">Rtf The Larp</div>
+  </div>
 
   <!-- Sparkles -->
   <div class="sparkle" style="top:10%; left:20%; animation-delay:0s;"></div>
@@ -140,15 +124,53 @@
   <div class="sparkle" style="top:60%; left:40%; animation-delay:2s;"></div>
   <div class="sparkle" style="top:80%; left:80%; animation-delay:3s;"></div>
 
-  <!-- Floating shapes -->
-  <div class="shape" style="left:10%; animation-duration:20s;"></div>
-  <div class="shape" style="left:50%; animation-duration:25s;"></div>
-  <div class="shape" style="left:80%; animation-duration:22s;"></div>
-  <div class="shape" style="left:30%; animation-duration:18s;"></div>
-  <div class="shape" style="left:70%; animation-duration:30s;"></div>
+  <!-- Background music -->
+  <audio autoplay loop>
+    <source src="chill-music.mp3" type="audio/mpeg">
+    Your browser does not support the audio element.
+  </audio>
 
+  <script>
+    // Matrix code rain
+    const canvas = document.getElementById('matrix');
+    const ctx = canvas.getContext('2d');
+
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    const letters = '01ABCDEFGHIJKLMNOPQRSTUVWXYZ@#$%^&*()*&^%';
+    const fontSize = 16;
+    const columns = canvas.width / fontSize;
+    const drops = Array(Math.floor(columns)).fill(1);
+
+    function draw() {
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      ctx.fillStyle = '#00ff00';
+      ctx.font = fontSize + 'px monospace';
+
+      for (let i = 0; i < drops.length; i++) {
+        const text = letters[Math.floor(Math.random() * letters.length)];
+        ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+
+        if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+          drops[i] = 0;
+        }
+
+        drops[i]++;
+      }
+    }
+
+    setInterval(draw, 50);
+    window.addEventListener('resize', () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    });
+  </script>
 </body>
 </html>
+
 
 
 
