@@ -26,6 +26,19 @@ body {
 /* Canvas for matrix effect */
 canvas { position:absolute; top:0; left:0; width:100%; height:100%; z-index:0; }
 
+/* Flying ASCII Logo */
+#flyingLogo {
+  position: absolute;
+  font-family: monospace;
+  font-size: 12px; /* Adjusted for full logo size */
+  color: #00ff00;
+  text-shadow: 0 0 10px #00ff00, 0 0 20px #c0ffc0;
+  pointer-events: none;
+  z-index: 15;
+  white-space: pre;
+  line-height: 12px;
+}
+
 /* Entrance overlay */
 #enterScreen {
   position: fixed;
@@ -46,7 +59,6 @@ canvas { position:absolute; top:0; left:0; width:100%; height:100%; z-index:0; }
   animation:fadeIn 1s forwards;
 }
 @keyframes fadeIn { from{opacity:0;} to{opacity:1;} }
-
 #enterScreen span { text-shadow:0 0 10px #00ff00; animation:glow 2s infinite alternate; }
 @keyframes glow { from { text-shadow:0 0 10px #00ff00;} to{ text-shadow:0 0 20px #00ff00,0 0 40px #00ff00;} }
 
@@ -94,7 +106,6 @@ h1 { font-size:2em; text-shadow:0 0 10px #00ff00; margin-bottom:20px; animation:
 /* Skip Song Button */
 .skip-btn { position: fixed; bottom:60px; right:20px; z-index:20; padding:10px 20px; border:2px solid #00ff00; color:#00ff00; background: rgba(0,0,0,0.7); cursor:pointer; font-family:'Courier New', monospace; border-radius:5px; text-align:center; }
 .skip-btn:hover { background: rgba(0,0,0,0.9); box-shadow:0 0 20px #00ff00,0 0 40px #00ff00; animation:glitch 0.5s infinite; }
-
 @keyframes glitch {0% { transform: translate(0,0) skew(0deg);}20% { transform: translate(-2px,2px) skew(-2deg);}40% { transform: translate(2px,-2px) skew(2deg);}60% { transform: translate(-1px,1px) skew(-1deg);}80% { transform: translate(1px,-1px) skew(1deg);}100% { transform: translate(0,0) skew(0deg);} }
 
 /* Now Playing */
@@ -103,160 +114,208 @@ h1 { font-size:2em; text-shadow:0 0 10px #00ff00; margin-bottom:20px; animation:
 
 /* HOA Section */
 #hoaPage { display:none; flex-direction: column; align-items:center; justify-content:center; width:100%; height:100%; z-index:2; }
-.hoa-text-box { width:300px; padding:15px; background:rgba(0,0,0,0.7); border:2px solid #00ff00; border-radius:10px; box-shadow:0 0 15px #00ff00; color:#00ff00; text-align:center; font-size:14px; user-select:none; pointer-events:none; animation:textglow 3s infinite alternate; font-family:'Courier New', monospace; white-space: pre; }
+.hoa-text-box { width:400px; padding:15px; background:rgba(0,0,0,0.7); border:2px solid #00ff00; border-radius:10px; box-shadow:0 0 15px #00ff00; color:#00ff00; text-align:center; font-size:14px; user-select:none; pointer-events:none; animation:textglow 3s infinite alternate; font-family:'Courier New', monospace; white-space: pre; }
 .back-btn { position:fixed; left:20px; top:20px; padding:10px 20px; border:2px solid #00ff00; color:#00ff00; background:rgba(0,0,0,0.7); cursor:pointer; font-family:'Courier New', monospace; border-radius:5px; text-align:center; }
 .back-btn:hover { background:rgba(0,0,0,0.9); box-shadow:0 0 20px #00ff00; animation:glitch 0.5s infinite; }
-
 </style>
 </head>
 <body>
 
 <canvas id="matrix"></canvas>
 
-<!-- Entrance Screen -->
-<div id="enterScreen">
-  <span>Click to Enter</span>
-</div>
+<!-- Flying ASCII Logo (Full Logo) -->
+<pre id="flyingLogo">
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⣴⠾⣿⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⡿⠻⢶⣄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣤⠞⠋⠀⢠⡿⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⢿⡄⠀⠉⠻⣦⡀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⣴⠟⠁⣴⠟⢠⣿⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⣿⠀⢾⣆⠈⠻⣦⡀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⢀⡾⠃⢠⣾⡏⠀⢸⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢹⡇⠀⢿⣧⡀⠘⢷⡀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⢀⣾⠁⢠⣿⣿⠁⠀⢸⠃⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠸⡇⠀⢸⣿⣷⡀⠘⣷⡀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⣾⠃⢀⣿⣿⣿⠀⠀⢸⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢠⡇⠀⢸⣿⣿⣧⠀⠸⣧⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⣰⡏⠀⣼⣿⣿⣿⠀⠀⢸⡇⠀⠀⠀⠀⠀⣀⣤⣴⠶⠛⠛⠛⠛⠙⠛⠛⠛⠛⠶⢦⣤⣀⠀⠀⠀⠀⠀⣸⠇⠀⣸⣿⣿⣿⡇⠀⢿⡆⠀⠀⠀⠀
+⠀⠀⠀⠀⣿⠃⠀⣿⣿⣿⣿⣧⠀⠀⢻⡄⢀⣤⠶⠛⢉⣀⣤⣴⣶⣶⣶⣶⣶⣶⣶⣶⣶⣤⣄⣀⠉⠛⠶⣤⡀⢠⡟⠀⢀⣿⣿⣿⣿⣷⠀⢸⡇⠀⠀⠀⠀
+⣶⣶⣴⡆⣿⠀⠀⣿⣿⣿⣿⣿⣧⡀⠀⠛⠋⢁⣤⣀⣙⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣉⣤⣄⡈⠙⠿⠀⢠⣿⣿⣿⣿⣿⣿⠀⢸⡇⠀⣠⠀⠀
+⣿⠀⢹⣇⣿⡄⠀⣿⣿⣿⣿⣿⣿⣿⣦⣄⣀⡈⠉⠙⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠉⠉⢁⣀⣠⣾⣿⣿⣿⣿⣿⣿⡿⠀⢸⣧⣰⠏⠀⡄
+⣿⠀⢀⠹⣿⣧⠀⠹⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠇⢰⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡀⢺⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠇⢀⣿⣿⠏⠀⢀⡟
+⣿⡄⢻⣆⠘⢿⣇⠀⠹⣿⣿⣿⣿⣿⣿⢿⣿⠋⢀⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣧⠀⠻⣿⠟⣹⣿⣿⣿⣿⣿⠋⠀⣼⡿⢃⣴⠟⢸⡇
+⢿⡇⠀⣿⣷⣄⠙⢷⣄⠈⠻⢿⣿⡿⠿⠟⠁⣠⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⡀⠙⠿⠿⠿⠿⠛⠋⠁⣠⡾⠋⣠⣿⢇⠀⣼⠇
+⠈⣿⠀⣿⡟⢿⣷⡀⠉⠓⣤⣤⣤⣤⣤⣤⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣶⣤⣤⣀⣤⣤⡴⠾⢏⣰⣿⠟⣱⡟⢡⡟⠀
+⠀⢹⣆⠘⣿⣦⡉⠻⠗⠂⣿⣿⣿⣿⡟⢻⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⢿⣿⣿⣿⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠛⣿⣿⣿⣿⣷⠀⣿⠛⢡⣤⣿⠁⣸⠇⠀
+⠀⠀⢿⡄⢻⣿⣧⣶⣤⡀⠙⣿⣿⣿⣥⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡆⣿⣿⣇⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⣼⣿⣿⡿⡇⣠⣴⣾⣿⣿⠇⢠⡿⠀⠀
+⠀⠀⠈⢷⡈⠻⣿⣿⣿⣿⡆⢸⣿⡿⠿⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⢿⣿⡏⠀⢸⣿⣿⣿⡿⠋⢠⡾⠁⠀⠀
+⠀⠀⠀⠀⠻⢦⡈⠻⢿⣿⠀⣸⣿⣿⣶⣄⠀⠈⢙⡛⠻⢿⣿⣿⣿⣿⢸⣿⣿⣿⠉⣿⣿⣿⣿⠿⠟⢛⡉⠁⢀⣴⣾⣿⣿⡆⠸⣿⣿⠋⣀⡴⠏⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠙⢷⣄⠀⣼⣿⣿⣿⣿⣿⣷⣦⡘⠛⠷⠶⠀⠉⠛⣛⢺⣿⣿⣿⠀⠿⠛⠉⠠⠶⠾⠛⣃⣴⣿⣿⣿⣿⣿⣿⡄⠉⣹⡾⠋⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⢻⡆⠛⢿⣿⣿⣿⣿⣿⣿⣿⣷⣶⣾⣿⣿⣿⣿⣿⣿⣿⣿⣷⣿⣿⣿⣿⣷⣶⣿⣿⣿⣿⣿⣿⣿⣿⡿⠀⣰⡟⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠻⣦⠀⠙⢿⣿⡿⠿⠛⢻⣛⣻⣿⣿⣿⣿⡿⣿⣿⣿⣿⡿⣽⣿⣿⣿⣿⣛⣛⠛⠻⠿⣿⣿⡿⠋⢀⣼⠋⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⢷⣄⠈⠻⣿⣦⣀⡈⠻⢿⣿⣿⣿⣿⠃⣼⣿⣿⣿⣇⢸⣿⣿⣿⣿⡿⠋⣀⣀⣼⣿⠋⠀⣴⡟⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢹⡄⠀⣿⣿⣿⣿⣄⠈⠻⣿⣿⡏⠸⣿⣿⣿⣿⡿⠀⣿⣿⡿⠋⠀⣴⣿⣿⣿⡇⠀⣸⠏⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⣷⠀⢹⣿⣿⣿⣿⡎⢻⣦⣙⠛⠂⠈⢿⣿⡟⠁⠺⢛⣩⣴⠾⣾⣿⣿⣿⣿⠇⢠⡿⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⢳⣄⡈⠙⢿⣿⣿⡄⢙⡛⠻⣿⢶⡼⠟⠠⢾⡿⠛⢟⠁⣰⣿⣿⠟⠉⢀⣴⡟⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠉⠹⣶⡀⠉⢿⣷⡘⢿⣶⣦⣤⣅⣀⣠⣤⣶⣷⡿⢡⣿⡟⠁⢠⣴⠏⠉⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⢷⡄⠈⣿⣷⣤⡉⠛⠻⠿⠿⠿⠟⠛⣉⣴⣿⣿⠀⣠⡞⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⢷⣄⠉⠻⣿⣿⣷⣶⣶⣿⣶⣶⣿⣿⣾⠟⠁⣠⡟⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠙⢦⡀⠈⢿⣿⣿⣿⣿⣿⣿⣿⠟⠁⣠⡾⠋⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠻⣦⠀⠻⢿⣿⣿⣿⠿⠋⠀⣴⠏⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠳⢶⣤⣤⣤⣤⣤⡴⠞⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+</pre>
 
-<!-- Clock -->
+<div id="enterScreen"><span>CLICK TO ENTER</span></div>
+
 <div id="clock"></div>
 
-<!-- Main Page -->
 <div id="mainPage">
   <h1>HelloKitty.cc</h1>
   <div class="boxes">
-    <div class="display-box" onclick="showOwners()">Owners</div>
     <div class="display-box">Rtf The Larp</div>
+    <div class="display-box" id="ownersBtn">Owners</div>
   </div>
 </div>
 
-<!-- HOA Page -->
 <div id="hoaPage">
-  <div class="hoa-text-box" id="hoaText"></div>
-  <div class="back-btn" onclick="showMain()">Back</div>
+  <div class="hoa-text-box">Anti-god the wannabe</div>
+  <div class="back-btn" onclick="backToMain()">BACK</div>
 </div>
 
-<!-- Owners Modal -->
 <div class="modal" id="ownersModal">
   <div class="modal-content">
+    <span class="close-btn" onclick="closeOwners()">&times;</span>
     <canvas id="modalMatrix"></canvas>
-    <span class="close-btn" onclick="closeModal()">&times;</span>
-    <h2>Owners</h2>
-    <p>NetGov</p>
-    <p>NetGov Jr</p>
+    <div style="position:relative; z-index:2;">
+      NetGov<br>NetGov Jr
+    </div>
   </div>
 </div>
 
-<!-- Skip Button -->
-<div class="skip-btn" onclick="skipToSecond()">Skip to 2nd Song</div>
+<div class="skip-btn" onclick="skipToSecond()">Goto Song 2</div>
+<div class="now-playing">Now Playing: Song 1</div>
 
-<!-- Now Playing -->
-<div class="now-playing" id="nowPlaying">Now Playing: Song 1</div>
-
-<!-- YouTube Player -->
-<div id="bgMusic"></div>
+<!-- Load YouTube Iframe API -->
 <script src="https://www.youtube.com/iframe_api"></script>
-
 <script>
-// Matrix rain
-const canvas = document.getElementById('matrix');
-const ctx = canvas.getContext('2d');
-canvas.width = window.innerWidth; canvas.height = window.innerHeight;
-const letters = '01ABCDEFGHIJKLMNOPQRSTUVWXYZ@#$%^&*()*&^%';
-const fontSize = 16;
-const columns = canvas.width / fontSize;
-const drops = Array(Math.floor(columns)).fill(1);
-function drawMatrix(){
-  ctx.fillStyle='rgba(0,0,0,0.05)'; ctx.fillRect(0,0,canvas.width,canvas.height);
-  ctx.fillStyle='#00ff00'; ctx.font = fontSize + 'px monospace';
-  for(let i=0;i<drops.length;i++){
-    const text = letters[Math.floor(Math.random()*letters.length)];
-    ctx.fillText(text,i*fontSize,drops[i]*fontSize);
-    if(drops[i]*fontSize>canvas.height && Math.random()>0.975){ drops[i]=0; }
-    drops[i]++;
+let player;
+let currentSong = 0;
+const songs = [
+  "xeNf2EKkpi4", // first song
+  "mhg4J39rRdE"  // second song
+];
+
+function onYouTubeIframeAPIReady() {
+  player = new YT.Player('player', {
+    height: '0',
+    width: '0',
+    videoId: songs[currentSong],
+    events: { 'onStateChange': onPlayerStateChange }
+  });
+}
+
+function onPlayerStateChange(event) {
+  if(event.data === YT.PlayerState.ENDED){
+    currentSong = (currentSong + 1) % songs.length;
+    player.loadVideoById(songs[currentSong]);
+    updateNowPlaying();
   }
 }
-setInterval(drawMatrix,50);
-window.addEventListener('resize',()=>{ canvas.width=window.innerWidth; canvas.height=window.innerHeight; });
 
-// Owners Modal
-const modal = document.getElementById('ownersModal');
-function showOwners(){ modal.style.display='flex'; modalMatrix(); }
-function closeModal(){ modal.style.display='none'; }
-window.onclick=function(event){ if(event.target===modal) modal.style.display='none'; }
+function updateNowPlaying(){
+  document.querySelector('.now-playing').textContent = 'Now Playing: Song ' + (currentSong+1);
+}
 
-// HOA functions
-function showHOA(){ 
-  document.getElementById('mainPage').style.display='none'; 
-  document.getElementById('hoaPage').style.display='flex'; 
-  typeText("Anti-god the wannabe");
+function playMusic(){ if(player) player.playVideo(); }
+function skipToSecond(){ currentSong=1; player.loadVideoById(songs[currentSong]); updateNowPlaying(); document.querySelector('.skip-btn').style.display='none'; }
+
+// ASCII Flying Logo
+const logo = document.getElementById('flyingLogo');
+let logoX = Math.random()*(window.innerWidth-400);
+let logoY = Math.random()*(window.innerHeight-400);
+let velX = (Math.random()*2+1)*(Math.random()<0.5?1:-1);
+let velY = (Math.random()*2+1)*(Math.random()<0.5?1:-1);
+function moveLogo(){
+  logoX+=velX; logoY+=velY;
+  if(logoX<=0 || logoX+400>=window.innerWidth) velX*=-1;
+  if(logoY<=0 || logoY+400>=window.innerHeight) velY*=-1;
+  logo.style.left=logoX+'px';
+  logo.style.top=logoY+'px';
+  requestAnimationFrame(moveLogo);
 }
-function showMain(){ document.getElementById('hoaPage').style.display='none'; document.getElementById('mainPage').style.display='flex'; }
-function typeText(text){
-  const box = document.getElementById('hoaText');
-  box.textContent='';
-  let i=0;
-  const interval = setInterval(()=>{
-    box.textContent += text[i];
-    i++;
-    if(i>=text.length) clearInterval(interval);
-  },50);
-}
+moveLogo();
+window.addEventListener('resize',()=>{ if(logoX+400>window.innerWidth) logoX=window.innerWidth-400; if(logoY+400>window.innerHeight) logoY=window.innerHeight-400; });
 
 // Clock
-function updateClock(){
-  const now = new Date();
-  const h = now.getHours().toString().padStart(2,'0');
-  const m = now.getMinutes().toString().padStart(2,'0');
-  const s = now.getSeconds().toString().padStart(2,'0');
-  document.getElementById('clock').textContent = `${h}:${m}:${s}`;
-}
+function updateClock(){ const now=new Date(); const h=String(now.getHours()).padStart(2,'0'); const m=String(now.getMinutes()).padStart(2,'0'); const s=String(now.getSeconds()).padStart(2,'0'); document.getElementById('clock').textContent=`${h}:${m}:${s}`;}
 setInterval(updateClock,1000);
+updateClock();
 
-// Entrance screen click
+// HOA
+const hoaBtn = document.createElement('div');
+hoaBtn.className='hoa-btn';
+hoaBtn.textContent='HOA';
+hoaBtn.onclick=()=>{ document.getElementById('mainPage').style.display='none'; document.getElementById('hoaPage').style.display='flex'; };
+document.body.appendChild(hoaBtn);
+function backToMain(){ document.getElementById('hoaPage').style.display='none'; document.getElementById('mainPage').style.display='flex'; }
+
+// Owners Modal
+const ownersBtn = document.getElementById('ownersBtn');
+ownersBtn.onclick = ()=>{ document.getElementById('ownersModal').style.display='flex'; modalMatrix(); };
+function closeOwners(){ document.getElementById('ownersModal').style.display='none'; }
+function modalMatrix(){
+  const c = document.getElementById('modalMatrix'); const ctx=c.getContext('2d');
+  c.width=c.offsetWidth; c.height=c.offsetHeight;
+  const letters='01ABCDEFGHIJKLMNOPQRSTUVWXYZ@#$%^&*()*&^%';
+  const fontSize=14;
+  const cols=c.width/fontSize;
+  const drops=Array(Math.floor(cols)).fill(1);
+  function drawM(){
+    ctx.fillStyle='rgba(0,0,0,0.1)'; ctx.fillRect(0,0,c.width,c.height);
+    ctx.fillStyle='#00ff00'; ctx.font=fontSize+'px monospace';
+    for(let i=0;i<drops.length;i++){
+      const text=letters[Math.floor(Math.random()*letters.length)];
+      ctx.fillText(text,i*fontSize,drops[i]*fontSize);
+      if(drops[i]*fontSize>c.height && Math.random()>0.975) drops[i]=0;
+      drops[i]++;
+    }
+    requestAnimationFrame(drawM);
+  }
+  drawM();
+}
+
+// Entrance Click
 const enterScreen = document.getElementById('enterScreen');
-enterScreen.addEventListener('click', ()=>{
+enterScreen.onclick = ()=>{
   enterScreen.style.display='none';
   document.getElementById('mainPage').style.display='flex';
   playMusic();
-});
+};
 
-// YouTube Music
-let player;
-const songs=['xeNf2EKkpi4','mhg4J39rRdE'];
-const songNames=['Song 1','Song 2'];
-const nowPlaying=document.getElementById('nowPlaying');
-let currentSong=0;
-function updateNowPlaying(){ nowPlaying.textContent='Now Playing: '+songNames[currentSong]; }
-function onYouTubeIframeAPIReady(){ player=new YT.Player('bgMusic',{height:'0',width:'0',videoId:songs[currentSong],playerVars:{autoplay:1,controls:0,loop:0,playlist:songs[currentSong],mute:0},events:{'onReady':onPlayerReady,'onStateChange':onPlayerStateChange}}); }
-function onPlayerReady(event){ event.target.playVideo(); updateNowPlaying(); }
-function onPlayerStateChange(event){ if(event.data===YT.PlayerState.ENDED){ currentSong++; if(currentSong<songs.length){ player.loadVideoById(songs[currentSong]); } else{ currentSong=0; player.loadVideoById(songs[currentSong]); } updateNowPlaying(); } }
-function playMusic(){ if(player) player.playVideo(); }
-function skipToSecond(){ currentSong=1; player.loadVideoById(songs[currentSong]); updateNowPlaying(); }
-
-// Modal Matrix
-function modalMatrix(){
-  const modalCanvas = document.getElementById('modalMatrix');
-  const ctxm = modalCanvas.getContext('2d');
-  modalCanvas.width = modalCanvas.offsetWidth;
-  modalCanvas.height = modalCanvas.offsetHeight;
-  const cols = modalCanvas.width / fontSize;
-  const dropsm = Array(Math.floor(cols)).fill(1);
-  function drawModalMatrix(){
-    ctxm.fillStyle='rgba(0,0,0,0.05)'; ctxm.fillRect(0,0,modalCanvas.width,modalCanvas.height);
-    ctxm.fillStyle='#00ff00'; ctxm.font = fontSize+'px monospace';
-    for(let i=0;i<dropsm.length;i++){
-      const text = letters[Math.floor(Math.random()*letters.length)];
-      ctxm.fillText(text,i*fontSize,dropsm[i]*fontSize);
-      if(dropsm[i]*fontSize>modalCanvas.height && Math.random()>0.975){ dropsm[i]=0; }
-      dropsm[i]++;
-    }
+// Matrix Background
+const matrixCanvas = document.getElementById('matrix');
+const ctx = matrixCanvas.getContext('2d');
+matrixCanvas.width = window.innerWidth;
+matrixCanvas.height = window.innerHeight;
+const letters = '01ABCDEFGHIJKLMNOPQRSTUVWXYZ@#$%^&*()*&^%';
+const fontSize = 14;
+const columns = Math.floor(matrixCanvas.width/fontSize);
+const drops = Array(columns).fill(1);
+function drawMatrix(){
+  ctx.fillStyle='rgba(0,0,0,0.1)';
+  ctx.fillRect(0,0,matrixCanvas.width,matrixCanvas.height);
+  ctx.fillStyle='#00ff00';
+  ctx.font = fontSize+'px monospace';
+  for(let i=0;i<drops.length;i++){
+    const text = letters[Math.floor(Math.random()*letters.length)];
+    ctx.fillText(text,i*fontSize,drops[i]*fontSize);
+    if(drops[i]*fontSize>matrixCanvas.height && Math.random()>0.975) drops[i]=0;
+    drops[i]++;
   }
-  setInterval(drawModalMatrix,50);
+  requestAnimationFrame(drawMatrix);
 }
+drawMatrix();
+window.addEventListener('resize',()=>{ matrixCanvas.width=window.innerWidth; matrixCanvas.height=window.innerHeight; });
 </script>
+
+<!-- YouTube Player (hidden) -->
+<div id="player"></div>
 </body>
 </html>
+
 
 
 
