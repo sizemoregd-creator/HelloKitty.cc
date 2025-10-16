@@ -10,21 +10,23 @@
     body {
       margin: 0;
       height: 100vh;
-      background: linear-gradient(145deg, #0d001a, #2e004f);
-      font-family: 'Press Start 2P', cursive;
-      color: #d0a8ff;
+      overflow: hidden;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      overflow: hidden;
+      background: linear-gradient(to top, #00111f, #203060);
+      font-family: 'Press Start 2P', cursive;
+      color: #d0a8ff;
     }
 
+    /* Title */
     h1 {
       font-size: 2em;
       text-shadow: 0 0 15px #b84cff, 0 0 30px #b84cff;
       margin-bottom: 40px;
       animation: glow 2s infinite alternate;
+      z-index: 2;
     }
 
     @keyframes glow {
@@ -32,6 +34,7 @@
       to { text-shadow: 0 0 25px #e6b3ff, 0 0 40px #b84cff; }
     }
 
+    /* Display Box */
     .display-box {
       width: 300px;
       padding: 12px;
@@ -45,6 +48,7 @@
       user-select: none;
       pointer-events: none;
       animation: textglow 3s infinite alternate;
+      z-index: 2;
     }
 
     @keyframes textglow {
@@ -52,36 +56,58 @@
       to { text-shadow: 0 0 25px #e6b3ff, 0 0 40px #b84cff; color: #fff; }
     }
 
-    /* Subtle cobwebs in corners */
-    .web {
+    /* Animated Sea and Birds */
+    .ocean {
       position: absolute;
-      background: url('https://i.imgur.com/1X7Oa8F.png') no-repeat center;
-      background-size: contain;
-      width: 300px;
-      height: 300px;
-      opacity: 0.12;
-      top: 0;
-      left: 0;
+      bottom: 0;
+      width: 100%;
+      height: 40%;
+      background: linear-gradient(to top, #00111f, #003366);
+      overflow: hidden;
+      z-index: 0;
     }
 
-    .web2 {
+    .wave {
       position: absolute;
-      background: url('https://i.imgur.com/1X7Oa8F.png') no-repeat center;
-      background-size: contain;
-      width: 300px;
-      height: 300px;
-      opacity: 0.1;
-      bottom: 0;
-      right: 0;
-      transform: rotate(180deg);
+      width: 200%;
+      height: 100%;
+      background: radial-gradient(circle at 50% 50%, rgba(255,255,255,0.15) 2%, transparent 2%) repeat-x;
+      background-size: 100px 100px;
+      opacity: 0.15;
+      animation: wave 10s linear infinite;
+    }
+
+    @keyframes wave {
+      from { transform: translateX(0); }
+      to { transform: translateX(-50%); }
+    }
+
+    .birds {
+      position: absolute;
+      top: 15%;
+      left: -10%;
+      width: 120%;
+      height: 20%;
+      background: url('https://i.imgur.com/MohhK5S.png') repeat-x;
+      background-size: 200px auto;
+      animation: fly 25s linear infinite;
+      opacity: 0.6;
+      z-index: 1;
+    }
+
+    @keyframes fly {
+      from { background-position: 0 0; }
+      to { background-position: 100% 0; }
     }
   </style>
 </head>
 <body>
-  <div class="web"></div>
-  <div class="web2"></div>
-  <h1>HelloKitty.cc</h1>
-  <div class="display-box">LLJVR the larp
+  <div class="birds"></div>
+  <div class="ocean">
+    <div class="wave"></div>
   </div>
+
+  <h1>HelloKitty.cc</h1>
+  <div class="display-box">LLJVR</div>
 </body>
 </html>
