@@ -13,10 +13,8 @@ body, html {
   color: #d0a8ff;
   overflow: hidden;
   background: black;
-  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><text y="50%" x="50%" dominant-baseline="middle" text-anchor="middle" font-size="512">🖕</text></svg>') 32 32, auto;
 }
 
-/* MATRIX BACKGROUND */
 canvas#matrix, canvas#modalMatrix, canvas#asciiFloating {
   position: absolute;
   top: 0;
@@ -24,7 +22,6 @@ canvas#matrix, canvas#modalMatrix, canvas#asciiFloating {
   z-index: 0;
 }
 
-/* ENTER SCREEN */
 #enterScreen {
   position: absolute;
   width: 100%;
@@ -38,7 +35,6 @@ canvas#matrix, canvas#modalMatrix, canvas#asciiFloating {
   z-index: 10;
 }
 
-/* CLOCK */
 #clock {
   position: fixed;
   top: 10px;
@@ -48,7 +44,6 @@ canvas#matrix, canvas#modalMatrix, canvas#asciiFloating {
   z-index: 5;
 }
 
-/* MAIN PAGE & HOA PAGE */
 #mainPage, #hoaPage {
   position: absolute;
   width: 100%;
@@ -86,7 +81,7 @@ h1 {
   border: 2px solid #b84cff;
   border-radius: 10px;
   box-shadow: 0 0 10px #b84cff;
-  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><text y="50%" x="50%" dominant-baseline="middle" text-anchor="middle" font-size="600">🖕</text></svg>') 32 32, auto;
+  cursor: pointer;
   transition: transform 0.2s, box-shadow 0.2s;
 }
 
@@ -100,7 +95,7 @@ h1 {
   top: 10px;
   left: 20px;
   font-size: 1em;
-  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><text y="50%" x="50%" dominant-baseline="middle" text-anchor="middle" font-size="600">🖕</text></svg>') 32 32, auto;
+  cursor: pointer;
   color: #00ffff;
   z-index: 5;
   user-select: none;
@@ -138,7 +133,7 @@ h1 {
   background: black;
   border: 2px solid #ff00ff;
   color: #ff00ff;
-  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><text y="50%" x="50%" dominant-baseline="middle" text-anchor="middle" font-size="600">🖕</text></svg>') 32 32, auto;
+  cursor: pointer;
   border-radius: 6px;
   z-index: 5;
 }
@@ -154,13 +149,14 @@ h1 {
 
 pre#flyingLogo {
   position: absolute;
-  font-size: 7px;
+  font-size: 10px;
   color: #ff00ff;
   white-space: pre;
   z-index: 3;
   pointer-events: none;
 }
 
+/* Owners Modal */
 .modal {
   display:none;
   position:fixed;
@@ -192,6 +188,7 @@ pre#flyingLogo {
   color:#00ff00;
   font-size: 18px;
 }
+
 </style>
 </head>
 <body>
@@ -217,9 +214,8 @@ pre#flyingLogo {
 
 <div class="hoa-btn">HOA</div>
 
-<!-- FULL FLYING ASCII LOGO -->
 <pre id="flyingLogo">
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⣴⠾⣿⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⡿⠻⢶⣄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⣴⠾⣿⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⡿⠻⢶⣄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
 ⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣤⠞⠋⠀⢠⡿⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⢿⡄⠀⠉⠻⣦⡀⠀⠀⠀⠀⠀⠀⠀⠀
 ⠀⠀⠀⠀⠀⠀⠀⠀⣴⠟⠁⣴⠟⢠⣿⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⣿⠀⢾⣆⠈⠻⣦⡀⠀⠀⠀⠀⠀⠀
 ⠀⠀⠀⠀⠀⠀⢀⡾⠃⢠⣾⡏⠀⢸⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢹⡇⠀⢿⣧⡀⠘⢷⡀⠀⠀⠀⠀⠀⠀
@@ -232,8 +228,7 @@ pre#flyingLogo {
 ⣿⠀⢀⠹⣿⣧⠀⠹⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠇⢰⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡀⢺⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠇⢀⣿⣿⠏⠀⢀⡟
 ⣿⡄⢻⣆⠘⢿⣇⠀⠹⣿⣿⣿⣿⣿⣿⢿⣿⠋⢀⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣧⠀⠻⣿⠟⣹⣿⣿⣿⣿⣿⠋⠀⣼⡿⢃⣴⠟⢸⡇
 ⢿⡇⠀⣿⣷⣄⠙⢷⣄⠈⠻⢿⣿⡿⠿⠟⠁⣠⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⡀⠙⠿⠿⠿⠿⠛⠋⠁⣠⡾⠋⣠⣿⢇⠀⣼⠇
-⠈⣿⠀⣿⡟⢿⣷⡀⠉⠓⣤⣤⣤⣤⣤⣤⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣶⣤⣤⣀⣤⣤⡴⠾⢏⣰⣿⠟⣱⡟⢡⡟⠀
-⠀⢹⣆⠘⣿⣦⡉⠻⠗⠂⣿⣿⣿⣿⡟⢻⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⢿⣿⣿⣿⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠛⣿⣿⣿⣿⣷⠀⣿⠛⢡⣤⣿⠁⣸⠇⠀
+⠀⢹⣆⠘⣿⣦⡉⠻⠗⠂⣿⣿⣿⣿⡟⢻⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⢿⣿⣿⣿⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠛⣿⣿⣿⣿⣷⠀⣿⠛⢡⣤⣿⠁⣸⠇⠀
 ⠀⠀⢿⡄⢻⣿⣧⣶⣤⡀⠙⣿⣿⣿⣥⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡆⣿⣿⣇⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⣼⣿⣿⡿⡇⣠⣴⣾⣿⣿⠇⢠⡿⠀⠀
 ⠀⠀⠈⢷⡈⠻⣿⣿⣿⣿⡆⢸⣿⡿⠿⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⢿⣿⡏⠀⢸⣿⣿⣿⡿⠋⢠⡾⠁⠀⠀
 ⠀⠀⠀⠀⠻⢦⡈⠻⢿⣿⠀⣸⣿⣿⣶⣄⠀⠈⢙⡛⠻⢿⣿⣿⣿⣿⢸⣿⣿⣿⠉⣿⣿⣿⣿⠿⠟⢛⡉⠁⢀⣴⣾⣿⣿⡆⠸⣿⣿⠋⣀⡴⠏⠀⠀⠀⠀
@@ -245,11 +240,6 @@ pre#flyingLogo {
 ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⣷⠀⢹⣿⣿⣿⣿⡎⢻⣦⣙⠛⠂⠈⢿⣿⡟⠁⠺⢛⣩⣴⠾⣾⣿⣿⣿⣿⠇⢠⡿⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
 ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⢳⣄⡈⠙⢿⣿⣿⡄⢙⡛⠻⣿⢶⡼⠟⠠⢾⡿⠛⢟⠁⣰⣿⣿⠟⠉⢀⣴⡟⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
 ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠉⠹⣶⡀⠉⢿⣷⡘⢿⣶⣦⣤⣅⣀⣠⣤⣶⣷⡿⢡⣿⡟⠁⢠⣴⠏⠉⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⢷⡄⠈⣿⣷⣤⡉⠛⠻⠿⠿⠿⠟⠛⣉⣴⣿⣿⠀⣠⡞⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⢷⣄⠉⠻⣿⣿⣷⣶⣶⣿⣶⣶⣿⣿⣾⠟⠁⣠⡟⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠙⢦⡀⠈⢿⣿⣿⣿⣿⣿⣿⣿⠟⠁⣠⡾⠋⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠻⣦⠀⠻⢿⣿⣿⣿⠿⠋⠀⣴⠏⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠳⢶⣤⣤⣤⣤⣤⡴⠞⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
 </pre>
 
 <div class="modal" id="ownersModal">
@@ -264,18 +254,11 @@ pre#flyingLogo {
 
 <div class="skip-btn" onclick="skipToSecond()">Goto Song 2</div>
 <div class="now-playing">Now Playing: Song 1</div>
+
 <div id="player"></div>
-
 <script src="https://www.youtube.com/iframe_api"></script>
-<script>
-// ===== ENTER SCREEN =====
-const enterScreen = document.getElementById('enterScreen');
-enterScreen.addEventListener('click', () => {
-  enterScreen.style.display='none';
-  document.getElementById('mainPage').style.display='flex';
-  playMusic();
-});
 
+<script>
 // ===== MUSIC =====
 let player;
 let currentSong = 0;
@@ -308,22 +291,118 @@ function updateClock(){
 setInterval(updateClock,1000);
 updateClock();
 
-// ===== HOA PAGE =====
-document.querySelector('.hoa-btn').addEventListener('click',()=>{
+// ===== MATRIX BACKGROUND =====
+const matrixCanvas = document.getElementById('matrix');
+const ctx = matrixCanvas.getContext('2d');
+matrixCanvas.width=window.innerWidth;
+matrixCanvas.height=window.innerHeight;
+const letters = '01ABCDEFGHIJKLMNOPQRSTUVWXYZ@#$%^&*()*&^%';
+const fontSize=14;
+const columns = Math.floor(matrixCanvas.width/fontSize);
+const drops = Array(columns).fill(1);
+function drawMatrix(){
+  ctx.fillStyle='rgba(0,0,0,0.1)';
+  ctx.fillRect(0,0,matrixCanvas.width,matrixCanvas.height);
+  ctx.fillStyle='#00ff00';
+  ctx.font=fontSize+'px monospace';
+  for(let i=0;i<drops.length;i++){
+    const text=letters[Math.floor(Math.random()*letters.length)];
+    ctx.fillText(text,i*fontSize,drops[i]*fontSize);
+    if(drops[i]*fontSize>matrixCanvas.height && Math.random()>0.975) drops[i]=0;
+    drops[i]++;
+  }
+  requestAnimationFrame(drawMatrix);
+}
+drawMatrix();
+window.addEventListener('resize',()=>{ matrixCanvas.width=window.innerWidth; matrixCanvas.height=window.innerHeight; });
+
+// ===== FLYING LOGO =====
+const logo = document.getElementById('flyingLogo');
+let logoX=Math.random()*(window.innerWidth-500), logoY=Math.random()*(window.innerHeight-500);
+let velX=(Math.random()*2+1)*(Math.random()<0.5?1:-1);
+let velY=(Math.random()*2+1)*(Math.random()<0.5?1:-1);
+function moveLogo(){
+  logoX+=velX; logoY+=velY;
+  if(logoX<=0 || logoX+500>=window.innerWidth) velX*=-1;
+  if(logoY<=0 || logoY+500>=window.innerHeight) velY*=-1;
+  logo.style.left=logoX+'px';
+  logo.style.top=logoY+'px';
+  requestAnimationFrame(moveLogo);
+}
+moveLogo();
+
+// ===== FLOATING ASCII =====
+const asciiCanvas=document.getElementById('asciiFloating');
+const asciiCtx=asciiCanvas.getContext('2d');
+asciiCanvas.width=window.innerWidth;
+asciiCanvas.height=window.innerHeight;
+let floats=[];
+for(let i=0;i<50;i++){
+  floats.push({x:Math.random()*window.innerWidth, y:Math.random()*window.innerHeight, char:letters[Math.floor(Math.random()*letters.length)], speed:Math.random()*1.5+0.5});
+}
+function drawFloats(){
+  asciiCtx.clearRect(0,0,asciiCanvas.width,asciiCanvas.height);
+  asciiCtx.fillStyle='#ff00ff';
+  asciiCtx.font='16px monospace';
+  floats.forEach(f=>{
+    asciiCtx.fillText(f.char,f.x,f.y);
+    f.y+=f.speed;
+    if(f.y>asciiCanvas.height){ f.y=0; f.x=Math.random()*asciiCanvas.width; f.char=letters[Math.floor(Math.random()*letters.length)]; }
+  });
+  requestAnimationFrame(drawFloats);
+}
+drawFloats();
+window.addEventListener('resize',()=>{ asciiCanvas.width=window.innerWidth; asciiCanvas.height=window.innerHeight; });
+
+// ===== ENTER SCREEN =====
+document.getElementById('enterScreen').onclick=()=>{
+  document.getElementById('enterScreen').style.display='none';
+  document.getElementById('mainPage').style.display='flex';
+  playMusic();
+};
+
+// ===== HOA =====
+document.querySelector('.hoa-btn').onclick=()=>{
   document.getElementById('mainPage').style.display='none';
   document.getElementById('hoaPage').style.display='flex';
-});
+};
 function backToMain(){
   document.getElementById('hoaPage').style.display='none';
   document.getElementById('mainPage').style.display='flex';
 }
 
 // ===== OWNERS MODAL =====
-document.getElementById('ownersBtn').addEventListener('click',()=>{ document.getElementById('ownersModal').style.display='flex'; });
+const ownersBtn=document.getElementById('ownersBtn');
+ownersBtn.onclick=()=>{ document.getElementById('ownersModal').style.display='flex'; modalMatrix(); };
 function closeOwners(){ document.getElementById('ownersModal').style.display='none'; }
+
+function modalMatrix(){
+  const c=document.getElementById('modalMatrix'); const ctx=c.getContext('2d');
+  c.width=c.offsetWidth; c.height=c.offsetHeight;
+  const letters='01ABCDEFGHIJKLMNOPQRSTUVWXYZ@#$%^&*()*&^%';
+  const fontSize=14; const cols=c.width/fontSize;
+  const drops=Array(Math.floor(cols)).fill(1);
+  function drawM(){
+    ctx.fillStyle='rgba(0,0,0,0.1)'; ctx.fillRect(0,0,c.width,c.height);
+    ctx.fillStyle='#00ff00'; ctx.font=fontSize+'px monospace';
+    for(let i=0;i<drops.length;i++){
+      const text=letters[Math.floor(Math.random()*letters.length)];
+      ctx.fillText(text,i*fontSize,drops[i]*fontSize);
+      if(drops[i]*fontSize>c.height && Math.random()>0.975) drops[i]=0;
+      drops[i]++;
+    }
+    requestAnimationFrame(drawM);
+  }
+  drawM();
+}
+
+// ===== RTF BOX =====
+document.getElementById('rtfBox').onclick=()=>{ alert('Rtf The Larp!'); };
+
 </script>
 </body>
 </html>
+
 
 
 
