@@ -17,8 +17,7 @@
       justify-content: center;
       font-family: 'Press Start 2P', cursive;
       color: #d0a8ff;
-      background: url('background.gif') no-repeat center center fixed;
-      background-size: cover;
+      background-color: cyan; /* changed to cyan */
     }
 
     h1 {
@@ -37,6 +36,7 @@
     .display-box {
       width: 300px;
       padding: 12px;
+      margin-bottom: 20px;
       background: rgba(0, 0, 0, 0.5);
       border: 2px solid #b84cff;
       border-radius: 10px;
@@ -50,19 +50,29 @@
       z-index: 2;
     }
 
+    .display-box.secondary {
+      border-color: #4cffb8;
+      box-shadow: 0 0 10px #4cffb8;
+      animation: textglow2 3s infinite alternate;
+    }
+
     @keyframes textglow {
       from { text-shadow: 0 0 5px #b84cff; color: #cfa6ff; }
       to { text-shadow: 0 0 25px #e6b3ff, 0 0 40px #b84cff; color: #fff; }
     }
 
-    /* Optional dark overlay for contrast */
+    @keyframes textglow2 {
+      from { text-shadow: 0 0 5px #4cffb8; color: #a6fff2; }
+      to { text-shadow: 0 0 25px #80fff0, 0 0 40px #4cffb8; color: #fff; }
+    }
+
     .overlay {
       position: absolute;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-      background: rgba(0, 0, 30, 0.3);
+      background: rgba(0, 0, 30, 0.2);
       z-index: 1;
     }
   </style>
@@ -70,9 +80,17 @@
 <body>
   <div class="overlay"></div>
   <h1>HelloKitty.cc</h1>
-  <div class="display-box">LLJVR wannabe doxxer</div>
+  <div class="display-box">LLJVR</div>
+  <div class="display-box secondary">Rtf The Larp</div>
+
+  <!-- Background music -->
+  <audio autoplay loop>
+    <source src="chill-music.mp3" type="audio/mpeg">
+    Your browser does not support the audio element.
+  </audio>
 </body>
 </html>
+
 
 
  
