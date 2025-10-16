@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
+<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>HelloKitty.cc</title>
 <style>
@@ -23,13 +23,40 @@ body {
   cursor: crosshair;
 }
 
-/* Canvas for matrix effect and particles */
+/* Canvas for matrix effect */
 canvas { position:absolute; top:0; left:0; width:100%; height:100%; z-index:0; }
+
+/* Entrance overlay */
+#enterScreen {
+  position: fixed;
+  top:0; left:0;
+  width:100%; height:100%;
+  background: rgba(0,0,0,0.7);
+  backdrop-filter: blur(8px);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  z-index:30;
+  flex-direction: column;
+  color:#00ff00;
+  font-family:'Press Start 2P', cursive;
+  font-size:20px;
+  text-align:center;
+  cursor:pointer;
+  animation:fadeIn 1s forwards;
+}
+@keyframes fadeIn { from{opacity:0;} to{opacity:1;} }
+
+#enterScreen span { text-shadow:0 0 10px #00ff00; animation:glow 2s infinite alternate; }
+@keyframes glow { from { text-shadow:0 0 10px #00ff00;} to{ text-shadow:0 0 20px #00ff00,0 0 40px #00ff00;} }
+
+/* Clock */
+#clock { position: fixed; top:10px; left:50%; transform:translateX(-50%); z-index:20; color:#00ff00; font-family:'Courier New', monospace; font-size:14px; text-shadow:0 0 5px #00ff00,0 0 10px #00ff00; }
 
 /* HOA Button */
 .hoa-btn {
   position: fixed;
-  top: 10px;
+  top: 40px;
   left: 50%;
   transform: translateX(-50%);
   z-index: 20;
@@ -45,10 +72,9 @@ canvas { position:absolute; top:0; left:0; width:100%; height:100%; z-index:0; }
 }
 .hoa-btn:hover { transform: translateX(-50%) scale(1.05); box-shadow: 0 0 20px #00ff00; }
 
-/* Main Page Styles */
-#mainPage { display: flex; flex-direction: column; align-items: center; justify-content: center; width: 100%; height: 100%; z-index:2; }
+/* Main Page */
+#mainPage { display: none; flex-direction: column; align-items: center; justify-content: center; width: 100%; height: 100%; z-index:2; }
 h1 { font-size:2em; text-shadow:0 0 10px #00ff00; margin-bottom:20px; animation:glow 2s infinite alternate, glitchText 5s infinite; text-align:center; }
-@keyframes glow { from { text-shadow:0 0 10px #00ff00;} to{ text-shadow:0 0 20px #00ff00,0 0 40px #00ff00;} }
 @keyframes glitchText { 0% { transform: translate(0,0); } 20% { transform: translate(-2px,2px); } 40% { transform: translate(2px,-2px); } 60% { transform: translate(-1px,1px); } 80% { transform: translate(1px,-1px); } 100% { transform: translate(0,0); } }
 
 .boxes { display:flex; gap:50px; }
@@ -58,24 +84,21 @@ h1 { font-size:2em; text-shadow:0 0 10px #00ff00; margin-bottom:20px; animation:
 
 @keyframes textglow { from{ text-shadow:0 0 5px #00ff00;color:#00ff00;} to{ text-shadow:0 0 25px #00ff00,0 0 40px #c0ffc0;color:#c0ffc0;} }
 
-/* Owners Modal */
+/* Modal */
 .modal { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.9); z-index:10; justify-content:center; align-items:center; }
 .modal-content { background:rgba(0,0,0,0.95); border:2px solid #00ff00; padding:30px; border-radius:10px; color:#00ff00; font-family:'Courier New', monospace; text-align:center; position:relative; box-shadow:0 0 30px #00ff00; overflow:hidden; }
 .modal-content canvas { position:absolute; top:0; left:0; width:100%; height:100%; z-index:0; }
 .close-btn { position:absolute; top:10px; right:15px; font-size:18px; cursor:pointer; color:#00ff00; font-weight:bold; z-index:2; }
 .close-btn:hover { color:#c0ffc0; }
 
-/* Buttons */
-.unmute-btn, .skip-btn { position: fixed; z-index:20; padding:10px 20px; border:2px solid #00ff00; color:#00ff00; background: rgba(0,0,0,0.7); cursor:pointer; font-family:'Courier New', monospace; border-radius:5px; text-align:center; }
-.unmute-btn { bottom:60px; right:20px; }
-.skip-btn { bottom:100px; right:20px; }
-.unmute-btn:hover, .skip-btn:hover { background: rgba(0,0,0,0.9); box-shadow:0 0 20px #00ff00,0 0 40px #00ff00; animation:glitch 0.5s infinite; }
+/* Skip Song Button */
+.skip-btn { position: fixed; bottom:60px; right:20px; z-index:20; padding:10px 20px; border:2px solid #00ff00; color:#00ff00; background: rgba(0,0,0,0.7); cursor:pointer; font-family:'Courier New', monospace; border-radius:5px; text-align:center; }
+.skip-btn:hover { background: rgba(0,0,0,0.9); box-shadow:0 0 20px #00ff00,0 0 40px #00ff00; animation:glitch 0.5s infinite; }
 
-/* Music Warning */
-.music-warning { position: fixed; bottom:20px; right:20px; z-index:20; padding:10px 20px; border:2px solid #00ff00; color:#00ff00; background: rgba(0,0,0,0.7); font-family:'Courier New', monospace; border-radius:5px; text-align:center; transition: opacity 1s; }
+@keyframes glitch {0% { transform: translate(0,0) skew(0deg);}20% { transform: translate(-2px,2px) skew(-2deg);}40% { transform: translate(2px,-2px) skew(2deg);}60% { transform: translate(-1px,1px) skew(-1deg);}80% { transform: translate(1px,-1px) skew(1deg);}100% { transform: translate(0,0) skew(0deg);} }
 
 /* Now Playing */
-.now-playing { position:fixed; top:10px; right:20px; z-index:20; padding:5px 15px; border:2px solid #00ff00; border-radius:5px; background: rgba(0,0,0,0.7); color:#00ff00; font-family:'Courier New', monospace; font-size:12px; text-align:center; animation:neonFlicker 1.5s infinite; }
+.now-playing { position:fixed; top:40px; right:20px; z-index:20; padding:5px 15px; border:2px solid #00ff00; border-radius:5px; background: rgba(0,0,0,0.7); color:#00ff00; font-family:'Courier New', monospace; font-size:12px; text-align:center; animation:neonFlicker 1.5s infinite; }
 @keyframes neonFlicker {0%,100%{opacity:1;text-shadow:0 0 5px #00ff00,0 0 10px #00ff00;}50%{opacity:0.8;text-shadow:0 0 20px #00ff00,0 0 30px #c0ffc0;}25%,75%{opacity:0.9;text-shadow:0 0 10px #00ff00,0 0 20px #00ff00;}}
 
 /* HOA Section */
@@ -83,12 +106,22 @@ h1 { font-size:2em; text-shadow:0 0 10px #00ff00; margin-bottom:20px; animation:
 .hoa-text-box { width:300px; padding:15px; background:rgba(0,0,0,0.7); border:2px solid #00ff00; border-radius:10px; box-shadow:0 0 15px #00ff00; color:#00ff00; text-align:center; font-size:14px; user-select:none; pointer-events:none; animation:textglow 3s infinite alternate; font-family:'Courier New', monospace; white-space: pre; }
 .back-btn { position:fixed; left:20px; top:20px; padding:10px 20px; border:2px solid #00ff00; color:#00ff00; background:rgba(0,0,0,0.7); cursor:pointer; font-family:'Courier New', monospace; border-radius:5px; text-align:center; }
 .back-btn:hover { background:rgba(0,0,0,0.9); box-shadow:0 0 20px #00ff00; animation:glitch 0.5s infinite; }
+
 </style>
 </head>
 <body>
 
 <canvas id="matrix"></canvas>
 
+<!-- Entrance Screen -->
+<div id="enterScreen">
+  <span>Click to Enter</span>
+</div>
+
+<!-- Clock -->
+<div id="clock"></div>
+
+<!-- Main Page -->
 <div id="mainPage">
   <h1>HelloKitty.cc</h1>
   <div class="boxes">
@@ -97,11 +130,13 @@ h1 { font-size:2em; text-shadow:0 0 10px #00ff00; margin-bottom:20px; animation:
   </div>
 </div>
 
+<!-- HOA Page -->
 <div id="hoaPage">
   <div class="hoa-text-box" id="hoaText"></div>
   <div class="back-btn" onclick="showMain()">Back</div>
 </div>
 
+<!-- Owners Modal -->
 <div class="modal" id="ownersModal">
   <div class="modal-content">
     <canvas id="modalMatrix"></canvas>
@@ -112,13 +147,16 @@ h1 { font-size:2em; text-shadow:0 0 10px #00ff00; margin-bottom:20px; animation:
   </div>
 </div>
 
-<div id="bgMusic"></div>
-<div class="unmute-btn" onclick="unmuteMusic()">Unmute Music</div>
+<!-- Skip Button -->
 <div class="skip-btn" onclick="skipToSecond()">Skip to 2nd Song</div>
-<div class="music-warning" id="musicWarning">It might take a minute for music to start</div>
+
+<!-- Now Playing -->
 <div class="now-playing" id="nowPlaying">Now Playing: Song 1</div>
 
+<!-- YouTube Player -->
+<div id="bgMusic"></div>
 <script src="https://www.youtube.com/iframe_api"></script>
+
 <script>
 // Matrix rain
 const canvas = document.getElementById('matrix');
@@ -141,20 +179,19 @@ function drawMatrix(){
 setInterval(drawMatrix,50);
 window.addEventListener('resize',()=>{ canvas.width=window.innerWidth; canvas.height=window.innerHeight; });
 
-// Modal functions
+// Owners Modal
 const modal = document.getElementById('ownersModal');
 function showOwners(){ modal.style.display='flex'; modalMatrix(); }
 function closeModal(){ modal.style.display='none'; }
 window.onclick=function(event){ if(event.target===modal) modal.style.display='none'; }
 
-// HOA functions with typing animation
+// HOA functions
 function showHOA(){ 
   document.getElementById('mainPage').style.display='none'; 
   document.getElementById('hoaPage').style.display='flex'; 
   typeText("Anti-god the wannabe");
 }
 function showMain(){ document.getElementById('hoaPage').style.display='none'; document.getElementById('mainPage').style.display='flex'; }
-
 function typeText(text){
   const box = document.getElementById('hoaText');
   box.textContent='';
@@ -166,8 +203,23 @@ function typeText(text){
   },50);
 }
 
-// Music warning fade
-setTimeout(()=>{ const mw=document.getElementById('musicWarning'); if(mw){ mw.style.opacity='0'; setTimeout(()=>{ mw.style.display='none'; },1000); } },10000);
+// Clock
+function updateClock(){
+  const now = new Date();
+  const h = now.getHours().toString().padStart(2,'0');
+  const m = now.getMinutes().toString().padStart(2,'0');
+  const s = now.getSeconds().toString().padStart(2,'0');
+  document.getElementById('clock').textContent = `${h}:${m}:${s}`;
+}
+setInterval(updateClock,1000);
+
+// Entrance screen click
+const enterScreen = document.getElementById('enterScreen');
+enterScreen.addEventListener('click', ()=>{
+  enterScreen.style.display='none';
+  document.getElementById('mainPage').style.display='flex';
+  playMusic();
+});
 
 // YouTube Music
 let player;
@@ -176,15 +228,13 @@ const songNames=['Song 1','Song 2'];
 const nowPlaying=document.getElementById('nowPlaying');
 let currentSong=0;
 function updateNowPlaying(){ nowPlaying.textContent='Now Playing: '+songNames[currentSong]; }
-function onYouTubeIframeAPIReady(){
-  player=new YT.Player('bgMusic',{height:'0',width:'0',videoId:songs[currentSong],playerVars:{autoplay:1,controls:0,loop:0,playlist:songs[currentSong],mute:1},events:{'onReady':onPlayerReady,'onStateChange':onPlayerStateChange}});
-}
+function onYouTubeIframeAPIReady(){ player=new YT.Player('bgMusic',{height:'0',width:'0',videoId:songs[currentSong],playerVars:{autoplay:1,controls:0,loop:0,playlist:songs[currentSong],mute:0},events:{'onReady':onPlayerReady,'onStateChange':onPlayerStateChange}}); }
 function onPlayerReady(event){ event.target.playVideo(); updateNowPlaying(); }
 function onPlayerStateChange(event){ if(event.data===YT.PlayerState.ENDED){ currentSong++; if(currentSong<songs.length){ player.loadVideoById(songs[currentSong]); } else{ currentSong=0; player.loadVideoById(songs[currentSong]); } updateNowPlaying(); } }
-function unmuteMusic(){ player.unMute(); document.querySelector('.unmute-btn').style.display='none'; document.getElementById('musicWarning').style.display='none'; }
-function skipToSecond(){ currentSong=1; player.loadVideoById(songs[currentSong]); updateNowPlaying(); document.querySelector('.skip-btn').style.display='none'; }
+function playMusic(){ if(player) player.playVideo(); }
+function skipToSecond(){ currentSong=1; player.loadVideoById(songs[currentSong]); updateNowPlaying(); }
 
-// Matrix inside modal
+// Modal Matrix
 function modalMatrix(){
   const modalCanvas = document.getElementById('modalMatrix');
   const ctxm = modalCanvas.getContext('2d');
@@ -207,6 +257,7 @@ function modalMatrix(){
 </script>
 </body>
 </html>
+
 
 
 
