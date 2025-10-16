@@ -10,7 +10,6 @@
 body {
   margin: 0;
   height: 100vh;
-  overflow: hidden;
   font-family: 'Press Start 2P', cursive;
   background-color: black;
   color: #00ff00;
@@ -18,6 +17,7 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  overflow: hidden;
   perspective: 1000px;
   position: relative;
 }
@@ -121,7 +121,16 @@ h1 {
 }
 .unmute-btn { bottom: 60px; right: 20px; }
 .skip-btn { bottom: 100px; right: 20px; }
-.unmute-btn:hover, .skip-btn:hover { background: rgba(0,0,0,0.9); box-shadow:0 0 20px #00ff00; }
+.unmute-btn:hover, .skip-btn:hover { background: rgba(0,0,0,0.9); box-shadow:0 0 20px #00ff00,0 0 40px #00ff00; animation: glitch 0.5s infinite; }
+
+@keyframes glitch {
+  0% { transform: translate(0px, 0px) skew(0deg); }
+  20% { transform: translate(-2px, 2px) skew(-2deg); }
+  40% { transform: translate(2px, -2px) skew(2deg); }
+  60% { transform: translate(-1px, 1px) skew(-1deg); }
+  80% { transform: translate(1px, -1px) skew(1deg); }
+  100% { transform: translate(0px, 0px) skew(0deg); }
+}
 
 .music-warning {
   position: fixed;
@@ -160,11 +169,30 @@ h1 {
   50% { opacity:0.8; text-shadow:0 0 20px #00ff00,0 0 30px #c0ffc0; }
   25%,75% { opacity:0.9; text-shadow:0 0 10px #00ff00,0 0 20px #00ff00; }
 }
+
+/* HOA page text box */
+.hoa-text-box {
+  width: 300px;
+  padding: 15px;
+  background: rgba(0,0,0,0.7);
+  border: 2px solid #00ff00;
+  border-radius: 10px;
+  box-shadow: 0 0 15px #00ff00;
+  color: #00ff00;
+  text-align: center;
+  font-size: 14px;
+  user-select: none;
+  pointer-events: none;
+  animation: textglow 3s infinite alternate;
+  position: relative;
+  margin-top: 20px;
+  z-index: 2;
+}
 </style>
 </head>
 <body>
 
-<div class="hoa-btn" onclick="goToHOA()">HOA</div>
+<div class="hoa-btn" onclick="showHOA()">HOA</div>
 <div class="now-playing" id="nowPlaying">Now Playing: Song 1</div>
 
 <canvas id="matrix"></canvas>
@@ -180,6 +208,9 @@ h1 {
 <div class="sparkle" style="top:30%; left:70%; animation-delay:1s;"></div>
 <div class="sparkle" style="top:60%; left:40%; animation-delay:2s;"></div>
 <div class="sparkle" style="top:80%; left:80%; animation-delay:3s;"></div>
+
+<!-- HOA text box -->
+<div class="hoa-text-box" id="hoaBox" style="display:none;">Anti-god the wannabe</div>
 
 <div class="modal" id="ownersModal">
   <div class="modal-content">
@@ -199,77 +230,80 @@ h1 {
 
 <script src="https://www.youtube.com/iframe_api"></script>
 <script>
-  // Matrix code rain
-  const canvas=document.getElementById('matrix');
-  const ctx=canvas.getContext('2d');
-  canvas.width=window.innerWidth; canvas.height=window.innerHeight;
-  const letters='01ABCDEFGHIJKLMNOPQRSTUVWXYZ@#$%^&*()*&^%';
-  const fontSize=16;
-  const columns=canvas.width/fontSize;
-  const drops=Array(Math.floor(columns)).fill(1);
-  function draw(){
-    ctx.fillStyle='rgba(0,0,0,0.05)';
-    ctx.fillRect(0,0,canvas.width,canvas.height);
-    ctx.fillStyle='#00ff00'; ctx.font=fontSize+'px monospace';
-    for(let i=0;i<drops.length;i++){
-      const text=letters[Math.floor(Math.random()*letters.length)];
-      ctx.fillText(text,i*fontSize,drops[i]*fontSize);
-      if(drops[i]*fontSize>canvas.height && Math.random()>0.975){ drops[i]=0; }
-      drops[i]++;
-    }
+const canvas=document.getElementById('matrix');
+const ctx=canvas.getContext('2d');
+canvas.width=window.innerWidth; canvas.height=window.innerHeight;
+const letters='01ABCDEFGHIJKLMNOPQRSTUVWXYZ@#$%^&*()*&^%';
+const fontSize=16;
+const columns=canvas.width/fontSize;
+const drops=Array(Math.floor(columns)).fill(1);
+function draw(){
+  ctx.fillStyle='rgba(0,0,0,0.05)';
+  ctx.fillRect(0,0,canvas.width,canvas.height);
+  ctx.fillStyle='#00ff00'; ctx.font=fontSize+'px monospace';
+  for(let i=0;i<drops.length;i++){
+    const text=letters[Math.floor(Math.random()*letters.length)];
+    ctx.fillText(text,i*fontSize,drops[i]*fontSize);
+    if(drops[i]*fontSize>canvas.height && Math.random()>0.975){ drops[i]=0; }
+    drops[i]++;
   }
-  setInterval(draw,50);
-  window.addEventListener('resize',()=>{canvas.width=window.innerWidth;canvas.height=window.innerHeight;});
+}
+setInterval(draw,50);
+window.addEventListener('resize',()=>{canvas.width=window.innerWidth;canvas.height=window.innerHeight;});
 
-  // Modal functions
-  const modal=document.getElementById('ownersModal');
-  function showOwners(){ modal.style.display='flex'; }
-  function closeModal(){ modal.style.display='none'; }
-  window.onclick=function(event){ if(event.target===modal) modal.style.display='none'; }
+const modal=document.getElementById('ownersModal');
+function showOwners(){ modal.style.display='flex'; }
+function closeModal(){ modal.style.display='none'; }
+window.onclick=function(event){ if(event.target===modal) modal.style.display='none'; }
 
-  // HOA navigation
-  function goToHOA(){ window.location.href='hoa.html'; }
+function showHOA(){ 
+  document.getElementById('hoaBox').style.display='block'; 
+  window.scrollTo(0,0); 
+}
 
-  // Music warning fade out
-  setTimeout(()=>{ const mw=document.getElementById('musicWarning'); if(mw){ mw.style.opacity='0'; setTimeout(()=>{ mw.style.display='none'; },1000); } },10000);
+setTimeout(()=>{
+  const mw=document.getElementById('musicWarning');
+  if(mw){ mw.style.opacity='0'; setTimeout(()=>{ mw.style.display='none'; },1000); }
+},10000);
 
-  // YouTube IFrame API music queue
-  let player;
-  const songs=['xeNf2EKkpi4','mhg4J39rRdE'];
-  const songNames=['Song 1','Song 2'];
-  const nowPlaying=document.getElementById('nowPlaying');
-  let currentSong=0;
+// YouTube Music
+let player;
+const songs=['xeNf2EKkpi4','mhg4J39rRdE'];
+const songNames=['Song 1','Song 2'];
+const nowPlaying=document.getElementById('nowPlaying');
+let currentSong=0;
 
-  function updateNowPlaying(){ nowPlaying.textContent='Now Playing: '+songNames[currentSong]; }
+function updateNowPlaying(){ nowPlaying.textContent='Now Playing: '+songNames[currentSong]; }
 
-  function onYouTubeIframeAPIReady(){
-    player=new YT.Player('bgMusic',{
-      height:'0',width:'0',videoId:songs[currentSong],
-      playerVars:{autoplay:1,controls:0,loop:0,playlist:songs[currentSong],mute:1},
-      events:{'onReady':onPlayerReady,'onStateChange':onPlayerStateChange}
-    });
-  }
-  function onPlayerReady(event){ event.target.playVideo(); updateNowPlaying(); }
-  function onPlayerStateChange(event){
-    if(event.data===YT.PlayerState.ENDED){
-      currentSong++;
-      if(currentSong<songs.length){ player.loadVideoById(songs[currentSong]); }
-      else{ currentSong=0; player.loadVideoById(songs[currentSong]); }
-      updateNowPlaying();
-    }
-  }
+function onYouTubeIframeAPIReady(){
+  player=new YT.Player('bgMusic',{
+    height:'0', width:'0', videoId:songs[currentSong],
+    playerVars:{autoplay:1,controls:0,loop:0,playlist:songs[currentSong],mute:1},
+    events:{'onReady':onPlayerReady,'onStateChange':onPlayerStateChange}
+  });
+}
 
-  // Unmute music
-  function unmuteMusic(){ player.unMute(); document.querySelector('.unmute-btn').style.display='none'; document.getElementById('musicWarning').style.display='none'; }
+function onPlayerReady(event){ event.target.playVideo(); updateNowPlaying(); }
 
-  // Skip to second song
-  function skipToSecond(){
-    currentSong=1;
-    player.loadVideoById(songs[currentSong]);
+function onPlayerStateChange(event){
+  if(event.data===YT.PlayerState.ENDED){
+    currentSong++;
+    if(currentSong<songs.length){ player.loadVideoById(songs[currentSong]); }
+    else{ currentSong=0; player.loadVideoById(songs[currentSong]); }
     updateNowPlaying();
-    document.querySelector('.skip-btn').style.display='none';
   }
+}
+
+function unmuteMusic(){ player.unMute(); document.querySelector('.unmute-btn').style.display='none'; document.getElementById('musicWarning').style.display='none'; }
+
+function skipToSecond(){ 
+  currentSong=1; 
+  player.loadVideoById(songs[currentSong]); 
+  updateNowPlaying(); 
+  document.querySelector('.skip-btn').style.display='none';
+}
 </script>
 </body>
 </html>
+
 
