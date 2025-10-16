@@ -97,7 +97,7 @@
 
     /* Modal styles */
     .modal {
-      display: none; /* hidden by default */
+      display: none;
       position: fixed;
       top: 0;
       left: 0;
@@ -134,6 +134,37 @@
     .close-btn:hover {
       color: #c0ffc0;
     }
+
+    /* YouTube iframe background */
+    #bgMusic {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 0;
+      height: 0;
+      pointer-events: none;
+    }
+
+    /* Optional unmute button */
+    .unmute-btn {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      z-index: 20;
+      padding: 10px 20px;
+      border: 2px solid #00ff00;
+      color: #00ff00;
+      background: rgba(0,0,0,0.7);
+      cursor: pointer;
+      font-family: 'Courier New', monospace;
+      border-radius: 5px;
+      text-align: center;
+    }
+    .unmute-btn:hover {
+      background: rgba(0,0,0,0.9);
+      box-shadow: 0 0 20px #00ff00;
+    }
+
   </style>
 </head>
 <body>
@@ -153,12 +184,6 @@
   <div class="sparkle" style="top:60%; left:40%; animation-delay:2s;"></div>
   <div class="sparkle" style="top:80%; left:80%; animation-delay:3s;"></div>
 
-  <!-- Background music -->
-  <audio autoplay loop>
-    <source src="chill-music.mp3" type="audio/mpeg">
-    Your browser does not support the audio element.
-  </audio>
-
   <!-- Modal -->
   <div class="modal" id="ownersModal">
     <div class="modal-content">
@@ -168,6 +193,12 @@
       <p>NetGov Jr</p>
     </div>
   </div>
+
+  <!-- YouTube background music (muted autoplay) -->
+  <iframe id="bgMusic" src="https://www.youtube.com/embed/xeNf2EKkpi4?autoplay=1&loop=1&playlist=xeNf2EKkpi4&mute=1" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+
+  <!-- Optional unmute button -->
+  <div class="unmute-btn" onclick="unmuteMusic()">Unmute Music</div>
 
   <script>
     // Matrix code rain
@@ -218,15 +249,25 @@
       modal.style.display = 'none';
     }
 
-    // Close modal on clicking outside content
     window.onclick = function(event) {
       if (event.target === modal) {
         modal.style.display = 'none';
       }
     }
+
+    // Unmute YouTube
+    function unmuteMusic() {
+      const iframe = document.getElementById('bgMusic');
+      const src = iframe.src;
+      if(src.includes('mute=1')) {
+        iframe.src = src.replace('mute=1','mute=0');
+      }
+      document.querySelector('.unmute-btn').style.display = 'none';
+    }
   </script>
 </body>
 </html>
+
 
 
 
