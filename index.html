@@ -109,8 +109,6 @@ h1 {
 /* Buttons */
 .unmute-btn, .skip-btn {
   position: fixed;
-  bottom: 60px;
-  right: 20px;
   z-index: 20;
   padding: 10px 20px;
   border: 2px solid #00ff00;
@@ -121,7 +119,8 @@ h1 {
   border-radius: 5px;
   text-align: center;
 }
-.skip-btn { bottom: 100px; }
+.unmute-btn { bottom: 60px; right: 20px; }
+.skip-btn { bottom: 100px; right: 20px; }
 .unmute-btn:hover, .skip-btn:hover { background: rgba(0,0,0,0.9); box-shadow:0 0 20px #00ff00; }
 
 .music-warning {
@@ -138,11 +137,29 @@ h1 {
   text-align: center;
   transition: opacity 1s;
 }
+
+/* Now Playing */
+.now-playing {
+  position: fixed;
+  top: 10px;
+  right: 20px;
+  z-index: 20;
+  padding: 5px 15px;
+  border: 2px solid #00ff00;
+  border-radius: 5px;
+  background: rgba(0,0,0,0.7);
+  color: #00ff00;
+  font-family: 'Courier New', monospace;
+  font-size: 12px;
+  text-align: center;
+  transition: all 0.3s;
+}
 </style>
 </head>
 <body>
 
 <div class="hoa-btn" onclick="goToHOA()">HOA</div>
+<div class="now-playing" id="nowPlaying">Now Playing: Song 1</div>
 
 <canvas id="matrix"></canvas>
 
@@ -213,7 +230,12 @@ h1 {
   // YouTube IFrame API music queue
   let player;
   const songs=['xeNf2EKkpi4','mhg4J39rRdE'];
+  const songNames=['Song 1','Song 2']; // You can replace with actual titles
+  const nowPlaying=document.getElementById('nowPlaying');
   let currentSong=0;
+
+  function updateNowPlaying(){ nowPlaying.textContent='Now Playing: '+songNames[currentSong]; }
+
   function onYouTubeIframeAPIReady(){
     player=new YT.Player('bgMusic',{
       height:'0',width:'0',videoId:songs[currentSong],
@@ -221,12 +243,13 @@ h1 {
       events:{'onReady':onPlayerReady,'onStateChange':onPlayerStateChange}
     });
   }
-  function onPlayerReady(event){ event.target.playVideo(); }
+  function onPlayerReady(event){ event.target.playVideo(); updateNowPlaying(); }
   function onPlayerStateChange(event){
     if(event.data===YT.PlayerState.ENDED){
       currentSong++;
       if(currentSong<songs.length){ player.loadVideoById(songs[currentSong]); }
       else{ currentSong=0; player.loadVideoById(songs[currentSong]); }
+      updateNowPlaying();
     }
   }
 
@@ -234,7 +257,7 @@ h1 {
   function unmuteMusic(){ player.unMute(); document.querySelector('.unmute-btn').style.display='none'; document.getElementById('musicWarning').style.display='none'; }
 
   // Skip to second song
-  function skipToSecond(){ currentSong=1; player.loadVideoById(songs[currentSong]); }
+  function skipToSecond(){ currentSong=1; player.loadVideoById(songs[currentSong]); updateNowPlaying(); }
 </script>
 </body>
 </html>
