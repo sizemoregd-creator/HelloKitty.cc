@@ -148,7 +148,7 @@
     /* Optional unmute button */
     .unmute-btn {
       position: fixed;
-      bottom: 20px;
+      bottom: 60px;
       right: 20px;
       z-index: 20;
       padding: 10px 20px;
@@ -165,6 +165,20 @@
       box-shadow: 0 0 20px #00ff00;
     }
 
+    /* Music warning */
+    .music-warning {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      z-index: 20;
+      padding: 10px 20px;
+      border: 2px solid #00ff00;
+      color: #00ff00;
+      background: rgba(0,0,0,0.7);
+      font-family: 'Courier New', monospace;
+      border-radius: 5px;
+      text-align: center;
+    }
   </style>
 </head>
 <body>
@@ -199,6 +213,11 @@
 
   <!-- Optional unmute button -->
   <div class="unmute-btn" onclick="unmuteMusic()">Unmute Music</div>
+
+  <!-- Music warning -->
+  <div class="music-warning" id="musicWarning">
+    It might take a minute for music to start
+  </div>
 
   <script>
     // Matrix code rain
@@ -263,10 +282,12 @@
         iframe.src = src.replace('mute=1','mute=0');
       }
       document.querySelector('.unmute-btn').style.display = 'none';
+      document.getElementById('musicWarning').style.display = 'none';
     }
   </script>
 </body>
 </html>
+
 
 
 
