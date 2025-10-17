@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>HelloKitty.cc</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
@@ -23,20 +23,41 @@ body {
   cursor: crosshair;
 }
 
-/* Canvas for matrix effect */
+/* Canvas for particles & matrix */
 canvas { position:absolute; top:0; left:0; width:100%; height:100%; z-index:0; }
 
-/* Flying ASCII Logo */
+/* ASCII Logo */
 #flyingLogo {
   position: absolute;
   font-family: monospace;
-  font-size: 12px; /* Adjusted for full logo size */
+  font-size: 12px;
   color: #00ff00;
   text-shadow: 0 0 10px #00ff00, 0 0 20px #c0ffc0;
   pointer-events: none;
   z-index: 15;
   white-space: pre;
   line-height: 12px;
+  transition: transform 0.3s ease;
+}
+
+/* Theme toggle button */
+#themeToggle {
+  position: fixed;
+  top: 10px;
+  right: 10px;
+  background: rgba(0,0,0,0.7);
+  border: 2px solid #00ff00;
+  padding: 8px 12px;
+  color: #00ff00;
+  cursor: pointer;
+  font-family: 'Press Start 2P';
+  border-radius: 5px;
+  z-index: 20;
+  transition: background 0.3s, transform 0.2s;
+}
+#themeToggle:hover {
+  background: rgba(0,0,0,0.9);
+  transform: scale(1.05);
 }
 
 /* Entrance overlay */
@@ -62,57 +83,79 @@ canvas { position:absolute; top:0; left:0; width:100%; height:100%; z-index:0; }
 #enterScreen span { text-shadow:0 0 10px #00ff00; animation:glow 2s infinite alternate; }
 @keyframes glow { from { text-shadow:0 0 10px #00ff00;} to{ text-shadow:0 0 20px #00ff00,0 0 40px #00ff00;} }
 
-/* Clock */
-#clock { position: fixed; top:10px; left:50%; transform:translateX(-50%); z-index:20; color:#00ff00; font-family:'Courier New', monospace; font-size:14px; text-shadow:0 0 5px #00ff00,0 0 10px #00ff00; }
-
-/* HOA Button */
-.hoa-btn {
+#clock {
   position: fixed;
-  top: 40px;
+  top: 10px;
   left: 50%;
   transform: translateX(-50%);
   z-index: 20;
-  padding: 10px 20px;
-  border: 2px solid #00ff00;
-  color: #00ff00;
-  background: rgba(0,0,0,0.7);
-  cursor: pointer;
-  font-family: 'Courier New', monospace;
-  border-radius: 5px;
-  text-align: center;
-  transition: transform 0.2s, box-shadow 0.2s;
+  color:#00ff00;
+  font-family:'Courier New', monospace;
+  font-size:14px;
+  text-shadow:0 0 5px #00ff00, 0 0 10px #00ff00;
 }
-.hoa-btn:hover { transform: translateX(-50%) scale(1.05); box-shadow: 0 0 20px #00ff00; }
 
-/* Main Page */
-#mainPage { display: none; flex-direction: column; align-items: center; justify-content: center; width: 100%; height: 100%; z-index:2; }
-h1 { font-size:2em; text-shadow:0 0 10px #00ff00; margin-bottom:20px; animation:glow 2s infinite alternate, glitchText 5s infinite; text-align:center; }
-@keyframes glitchText { 0% { transform: translate(0,0); } 20% { transform: translate(-2px,2px); } 40% { transform: translate(2px,-2px); } 60% { transform: translate(-1px,1px); } 80% { transform: translate(1px,-1px); } 100% { transform: translate(0,0); } }
+/* Main content */
+#mainPage {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  z-index:2;
+}
+h1 {
+  font-size:2em;
+  text-shadow:0 0 10px #00ff00;
+  margin-bottom:20px;
+  animation:glow 2s infinite alternate, glitchText 5s infinite;
+  text-align:center;
+}
+@keyframes glitchText {
+  0% { transform: translate(0,0); }
+  20% { transform: translate(-2px,2px); }
+  40% { transform: translate(2px,-2px); }
+  60% { transform: translate(-1px,1px); }
+  80% { transform: translate(1px,-1px); }
+  100% { transform: translate(0,0); }
+}
 
-.boxes { display:flex; gap:50px; }
-.display-box { width:200px; padding:15px; background:rgba(0,0,0,0.7); border:2px solid #00ff00; border-radius:5px; box-shadow:0 0 15px #00ff00; color:#00ff00; text-align:center; font-size:14px; user-select:none; cursor:pointer; pointer-events:auto; animation:textglow 3s infinite alternate, glitchBox 6s infinite; font-family:'Courier New', monospace; transition: transform 0.3s, box-shadow 0.3s; }
-.display-box:hover { transform:scale(1.05); box-shadow:0 0 30px #00ff00,0 0 50px #c0ffc0; }
-@keyframes glitchBox { 0% { transform: translate(0,0) rotate(0deg); } 20% { transform: translate(-2px,2px) rotate(-1deg); } 40% { transform: translate(2px,-2px) rotate(1deg); } 60% { transform: translate(-1px,1px) rotate(0deg); } 80% { transform: translate(1px,-1px) rotate(-1deg); } 100% { transform: translate(0,0) rotate(0deg); } }
+.boxes {
+  display:flex; gap:50px;
+}
+.display-box {
+  width:200px; padding:15px; background:rgba(0,0,0,0.7);
+  border:2px solid #00ff00; border-radius:5px; box-shadow:0 0 15px #00ff00;
+  color:#00ff00; text-align:center; font-size:14px; user-select:none; cursor:pointer;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+.display-box:hover {
+  transform:scale(1.05);
+  box-shadow:0 0 30px #00ff00, 0 0 50px #c0ffc0;
+}
 
-@keyframes textglow { from{ text-shadow:0 0 5px #00ff00;color:#00ff00;} to{ text-shadow:0 0 25px #00ff00,0 0 40px #c0ffc0;color:#c0ffc0;} }
-
-/* Modal */
+/* Modal styling (unchanged) */
 .modal { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.9); z-index:10; justify-content:center; align-items:center; }
 .modal-content { background:rgba(0,0,0,0.95); border:2px solid #00ff00; padding:30px; border-radius:10px; color:#00ff00; font-family:'Courier New', monospace; text-align:center; position:relative; box-shadow:0 0 30px #00ff00; overflow:hidden; }
-.modal-content canvas { position:absolute; top:0; left:0; width:100%; height:100%; z-index:0; }
 .close-btn { position:absolute; top:10px; right:15px; font-size:18px; cursor:pointer; color:#00ff00; font-weight:bold; z-index:2; }
 .close-btn:hover { color:#c0ffc0; }
 
-/* Skip Song Button */
-.skip-btn { position: fixed; bottom:60px; right:20px; z-index:20; padding:10px 20px; border:2px solid #00ff00; color:#00ff00; background: rgba(0,0,0,0.7); cursor:pointer; font-family:'Courier New', monospace; border-radius:5px; text-align:center; }
-.skip-btn:hover { background: rgba(0,0,0,0.9); box-shadow:0 0 20px #00ff00,0 0 40px #00ff00; animation:glitch 0.5s infinite; }
-@keyframes glitch {0% { transform: translate(0,0) skew(0deg);}20% { transform: translate(-2px,2px) skew(-2deg);}40% { transform: translate(2px,-2px) skew(2deg);}60% { transform: translate(-1px,1px) skew(-1deg);}80% { transform: translate(1px,-1px) skew(1deg);}100% { transform: translate(0,0) skew(0deg);} }
+.skip-btn {
+  position: fixed; bottom:60px; right:20px; z-index:20; padding:10px 20px; border:2px solid #00ff00; color:#00ff00; background: rgba(0,0,0,0.7); cursor:pointer; font-family:'Courier New', monospace; border-radius:5px;
+}
+.skip-btn:hover { background: rgba(0,0,0,0.9); box-shadow:0 0 20px #00ff00, 0 0 40px #00ff00; }
 
-/* Now Playing */
-.now-playing { position:fixed; top:40px; right:20px; z-index:20; padding:5px 15px; border:2px solid #00ff00; border-radius:5px; background: rgba(0,0,0,0.7); color:#00ff00; font-family:'Courier New', monospace; font-size:12px; text-align:center; animation:neonFlicker 1.5s infinite; }
-@keyframes neonFlicker {0%,100%{opacity:1;text-shadow:0 0 5px #00ff00,0 0 10px #00ff00;}50%{opacity:0.8;text-shadow:0 0 20px #00ff00,0 0 30px #c0ffc0;}25%,75%{opacity:0.9;text-shadow:0 0 10px #00ff00,0 0 20px #00ff00;}}
+.now-playing {
+  position:fixed; top:40px; right:20px; z-index:20; padding:5px 15px; border:2px solid #00ff00; border-radius:5px; background: rgba(0,0,0,0.7); color:#00ff00; font-family:'Courier New', monospace; font-size:12px; text-align:center; animation:neonFlicker 1.5s infinite;
+}
+@keyframes neonFlicker {
+  0%,100% { opacity:1; text-shadow:0 0 5px #00ff00, 0 0 10px #00ff00; }
+  50% { opacity:0.8; text-shadow:0 0 20px #00ff00, 0 0 30px #c0ffc0; }
+  25%,75% { opacity:0.9; text-shadow:0 0 10px #00ff00, 0 0 20px #00ff00; }
+}
 
-/* HOA Section */
+/* HOA Page & TextBox (unchanged) */
 #hoaPage { display:none; flex-direction: column; align-items:center; justify-content:center; width:100%; height:100%; z-index:2; }
 .hoa-text-box { width:400px; padding:15px; background:rgba(0,0,0,0.7); border:2px solid #00ff00; border-radius:10px; box-shadow:0 0 15px #00ff00; color:#00ff00; text-align:center; font-size:14px; user-select:none; pointer-events:none; animation:textglow 3s infinite alternate; font-family:'Courier New', monospace; white-space: pre; }
 .back-btn { position:fixed; left:20px; top:20px; padding:10px 20px; border:2px solid #00ff00; color:#00ff00; background:rgba(0,0,0,0.7); cursor:pointer; font-family:'Courier New', monospace; border-radius:5px; text-align:center; }
@@ -121,47 +164,34 @@ h1 { font-size:2em; text-shadow:0 0 10px #00ff00; margin-bottom:20px; animation:
 </head>
 <body>
 
-<canvas id="matrix"></canvas>
+<!-- Particle Canvas for effects -->
+<canvas id="particleCanvas"></canvas>
 
-<!-- Flying ASCII Logo (Full Logo) -->
+<!-- Full ASCII Logo -->
 <pre id="flyingLogo">
 ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⣴⠾⣿⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⡿⠻⢶⣄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
 ⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣤⠞⠋⠀⢠⡿⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⢿⡄⠀⠉⠻⣦⡀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⣴⠟⠁⣴⠟⢠⣿⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⣿⠀⢾⣆⠈⠻⣦⡀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⢀⡾⠃⢠⣾⡏⠀⢸⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢹⡇⠀⢿⣧⡀⠘⢷⡀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⢀⣾⠁⢠⣿⣿⠁⠀⢸⠃⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠸⡇⠀⢸⣿⣷⡀⠘⣷⡀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⣾⠃⢀⣿⣿⣿⠀⠀⢸⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢠⡇⠀⢸⣿⣿⣧⠀⠸⣧⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⣰⡏⠀⣼⣿⣿⣿⠀⠀⢸⡇⠀⠀⠀⠀⠀⣀⣤⣴⠶⠛⠛⠛⠛⠙⠛⠛⠛⠛⠶⢦⣤⣀⠀⠀⠀⠀⠀⣸⠇⠀⣸⣿⣿⣿⡇⠀⢿⡆⠀⠀⠀⠀
-⠀⠀⠀⠀⣿⠃⠀⣿⣿⣿⣿⣧⠀⠀⢻⡄⢀⣤⠶⠛⢉⣀⣤⣴⣶⣶⣶⣶⣶⣶⣶⣶⣶⣤⣄⣀⠉⠛⠶⣤⡀⢠⡟⠀⢀⣿⣿⣿⣿⣷⠀⢸⡇⠀⠀⠀⠀
-⣶⣶⣴⡆⣿⠀⠀⣿⣿⣿⣿⣿⣧⡀⠀⠛⠋⢁⣤⣀⣙⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣉⣤⣄⡈⠙⠿⠀⢠⣿⣿⣿⣿⣿⣿⠀⢸⡇⠀⣠⠀⠀
-⣿⠀⢹⣇⣿⡄⠀⣿⣿⣿⣿⣿⣿⣿⣦⣄⣀⡈⠉⠙⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠉⠉⢁⣀⣠⣾⣿⣿⣿⣿⣿⣿⡿⠀⢸⣧⣰⠏⠀⡄
-⣿⠀⢀⠹⣿⣧⠀⠹⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠇⢰⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡀⢺⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠇⢀⣿⣿⠏⠀⢀⡟
-⣿⡄⢻⣆⠘⢿⣇⠀⠹⣿⣿⣿⣿⣿⣿⢿⣿⠋⢀⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣧⠀⠻⣿⠟⣹⣿⣿⣿⣿⣿⠋⠀⣼⡿⢃⣴⠟⢸⡇
-⢿⡇⠀⣿⣷⣄⠙⢷⣄⠈⠻⢿⣿⡿⠿⠟⠁⣠⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⡀⠙⠿⠿⠿⠿⠛⠋⠁⣠⡾⠋⣠⣿⢇⠀⣼⠇
-⠈⣿⠀⣿⡟⢿⣷⡀⠉⠓⣤⣤⣤⣤⣤⣤⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣶⣤⣤⣀⣤⣤⡴⠾⢏⣰⣿⠟⣱⡟⢡⡟⠀
-⠀⢹⣆⠘⣿⣦⡉⠻⠗⠂⣿⣿⣿⣿⡟⢻⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⢿⣿⣿⣿⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠛⣿⣿⣿⣿⣷⠀⣿⠛⢡⣤⣿⠁⣸⠇⠀
-⠀⠀⢿⡄⢻⣿⣧⣶⣤⡀⠙⣿⣿⣿⣥⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡆⣿⣿⣇⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⣼⣿⣿⡿⡇⣠⣴⣾⣿⣿⠇⢠⡿⠀⠀
-⠀⠀⠈⢷⡈⠻⣿⣿⣿⣿⡆⢸⣿⡿⠿⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⢿⣿⡏⠀⢸⣿⣿⣿⡿⠋⢠⡾⠁⠀⠀
-⠀⠀⠀⠀⠻⢦⡈⠻⢿⣿⠀⣸⣿⣿⣶⣄⠀⠈⢙⡛⠻⢿⣿⣿⣿⣿⢸⣿⣿⣿⠉⣿⣿⣿⣿⠿⠟⢛⡉⠁⢀⣴⣾⣿⣿⡆⠸⣿⣿⠋⣀⡴⠏⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠙⢷⣄⠀⣼⣿⣿⣿⣿⣿⣷⣦⡘⠛⠷⠶⠀⠉⠛⣛⢺⣿⣿⣿⠀⠿⠛⠉⠠⠶⠾⠛⣃⣴⣿⣿⣿⣿⣿⣿⡄⠉⣹⡾⠋⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⢻⡆⠛⢿⣿⣿⣿⣿⣿⣿⣿⣷⣶⣾⣿⣿⣿⣿⣿⣿⣿⣿⣷⣿⣿⣿⣿⣷⣶⣿⣿⣿⣿⣿⣿⣿⣿⡿⠀⣰⡟⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠻⣦⠀⠙⢿⣿⡿⠿⠛⢻⣛⣻⣿⣿⣿⣿⡿⣿⣿⣿⣿⡿⣽⣿⣿⣿⣿⣛⣛⠛⠻⠿⣿⣿⡿⠋⢀⣼⠋⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⢷⣄⠈⠻⣿⣦⣀⡈⠻⢿⣿⣿⣿⣿⠃⣼⣿⣿⣿⣇⢸⣿⣿⣿⣿⡿⠋⣀⣀⣼⣿⠋⠀⣴⡟⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢹⡄⠀⣿⣿⣿⣿⣄⠈⠻⣿⣿⡏⠸⣿⣿⣿⣿⡿⠀⣿⣿⡿⠋⠀⣴⣿⣿⣿⡇⠀⣸⠏⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⣷⠀⢹⣿⣿⣿⣿⡎⢻⣦⣙⠛⠂⠈⢿⣿⡟⠁⠺⢛⣩⣴⠾⣾⣿⣿⣿⣿⠇⢠⡿⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⢳⣄⡈⠙⢿⣿⣿⡄⢙⡛⠻⣿⢶⡼⠟⠠⢾⡿⠛⢟⠁⣰⣿⣿⠟⠉⢀⣴⡟⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠉⠹⣶⡀⠉⢿⣷⡘⢿⣶⣦⣤⣅⣀⣠⣤⣶⣷⡿⢡⣿⡟⠁⢠⣴⠏⠉⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⢷⡄⠈⣿⣷⣤⡉⠛⠻⠿⠿⠿⠟⠛⣉⣴⣿⣿⠀⣠⡞⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⢷⣄⠉⠻⣿⣿⣷⣶⣶⣿⣶⣶⣿⣿⣾⠟⠁⣠⡟⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠙⢦⡀⠈⢿⣿⣿⣿⣿⣿⣿⣿⠟⠁⣠⡾⠋⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠻⣦⠀⠻⢿⣿⣿⣿⠿⠋⠀⣴⠏⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠳⢶⣤⣤⣤⣤⣤⡴⠞⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⣴⠟⠁⣴⠟⢠⣿⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⣿⠀⢾⣆⠈⠻⣦⡀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⢀⡾⠃⢠⣾⡏⠀⢸⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢹⡇⠀⢿⣧⡀⠘⢷⡀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⢀⣾⠁⢠⣿⣿⠁⠀⢸⠃⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠸⡇⠀⢸⣿⣷⡀⠘⣷⡀⠀⠀⠀
+⠀⠀⠀⠀⠀⣾⠃⢀⣿⣿⣿⠀⠀⢸⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢠⡇⠀⢸⣿⣿⣧⠀⠸⣧⠀⠀⠀
+⠀⠀⠀⠀⣰⡏⠀⣼⣿⣿⣿⠀⠀⢸⡇⠀⠀⠀⠀⠀⣀⣤⣴⠶⠛⠛⠛⠛⠙⠛⠛⠛⠛⠶⢦⣤⣀⠀⠀⠀⠀⠀⣸⠇⠀⣸⣿⣿⣿⡇⠀⢿⡆⠀⠀
+⠀⠀⠀⠀⣿⠃⠀⣿⣿⣿⣿⣧⠀⠀⢻⡄⢀⣤⠶⠛⢉⣀⣤⣴⣶⣶⣶⣶⣶⣶⣶⣶⣶⣤⣄⣀⠉⠛⠶⣤⡀⢠⡟⠀⢀⣿⣿⣿⣿⣷⠀⢸⡇⠀⠀
+⣶⣶⣦⡆⣿⠀⠀⣿⣿⣿⣿⣿⣧⡀⠀⠛⠋⢁⣤⣀⣙⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣉⣤⣄⡈⠙⠿⠀⢠⣿⣿⣿⣿⣿⣿⠀⢸⡇⠀⠀
+⣿⠀⢹⣇⣿⡄⠀⣿⣿⣿⣿⣿⣿⣿⣦⣄⣀⡈⠉⠙⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠉⠉⢀⣀⣠⣾⣿⣿⣿⣿⣿⣿⠀⢸⣧⣰⠏⠀⡄
+⣿⠀⢀⠹⣿⣧⠀⠹⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠇⢰⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠉⠉⢁⣀⣠⣾⣿⣿⣿⣿⣿⣿⠀⢸⣧⣰⠏⠀⡄
+⣿⡄⢻⣆⠘⢿⣇⠀⠹⣿⣿⣿⣿⣿⣿⢿⣿⠋⢀⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣧⠀⠻⣿⠟⣹⣿⣿⣿⣿⣿⠋⠀⣼⡿⢃⣴⠟⢸⡇
+⢿⡇⠀⣿⣷⣄⠙⢷⣄⠈⠻⢿⣿⡿⠿⠟⠁⣠⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣧⠀⠻⣿⠟⣹⣿⣿⣿⣿⠋⠀⣼⡿⢃⣴⠟⢸⡇
+⠀⠀⢹⣆⠘⣿⣦⡉⠻⠗⠂⣿⣿⣿⣿⡟⢻⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⢿⣿⣿⣿⢿⣿⣿⣿⣿⣛⣛⠛⠻⠿⣿⣿⡿⠋⢀⣼⠋⠀⠀⠀⠀⠀
+⠀⠀⠀⠙⢷⣄⠀⣼⣿⣿⣿⣿⣿⣷⣦⡘⠛⠷⠶⠀⠉⠛⣛⢺⣿⣿⣿⠀⠿⠛⠉⠠⠶⠾⠛⣃⣴⣿⣿⣿⣿⣿⣿⡄⠉⣹⡾⠋⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠈⢻⡆⠛⢿⣿⣿⣿⣿⣿⣿⣿⣿⣷⣶⣾⣿⣿⣿⣿⣿⣿⣿⣷⣿⣿⣿⣿⣷⣶⣿⣿⣿⣿⣿⣿⣿⣿⡿⠀⣰⡟⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠻⣦⠀⠙⢿⣿⡿⠿⠛⢻⣛⣻⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠿⠀⣰⡟⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⢷⣄⠈⠻⣿⣦⣀⡈⠻⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⣶⣶⡾⠁⠀⠀⠀⠀⠀
 </pre>
 
+<!-- Buttons and overlays -->
 <div id="enterScreen"><span>CLICK TO ENTER</span></div>
-
 <div id="clock"></div>
-
 <div id="mainPage">
   <h1>HelloKitty.cc</h1>
   <div class="boxes">
@@ -169,34 +199,29 @@ h1 { font-size:2em; text-shadow:0 0 10px #00ff00; margin-bottom:20px; animation:
     <div class="display-box" id="ownersBtn">Owners</div>
   </div>
 </div>
-
 <div id="hoaPage">
   <div class="hoa-text-box">Anti-god the wannabe</div>
   <div class="back-btn" onclick="backToMain()">BACK</div>
 </div>
-
 <div class="modal" id="ownersModal">
   <div class="modal-content">
     <span class="close-btn" onclick="closeOwners()">&times;</span>
     <canvas id="modalMatrix"></canvas>
-    <div style="position:relative; z-index:2;">
-      NetGov<br>NetGov Jr
-    </div>
+    <div style="position:relative; z-index:2;">NetGov<br>NetGov Jr</div>
   </div>
 </div>
-
 <div class="skip-btn" onclick="skipToSecond()">Goto Song 2</div>
 <div class="now-playing">Now Playing: Song 1</div>
 
-<!-- Load YouTube Iframe API -->
+<!-- YouTube Player -->
+<div id="player"></div>
+
 <script src="https://www.youtube.com/iframe_api"></script>
 <script>
+// =================== Music ===================
 let player;
 let currentSong = 0;
-const songs = [
-  "xeNf2EKkpi4", // first song
-  "mhg4J39rRdE"  // second song
-];
+const songs = ["xeNf2EKkpi4", "mhg4J39rRdE"];
 
 function onYouTubeIframeAPIReady() {
   player = new YT.Player('player', {
@@ -206,101 +231,139 @@ function onYouTubeIframeAPIReady() {
     events: { 'onStateChange': onPlayerStateChange }
   });
 }
-
 function onPlayerStateChange(event) {
-  if(event.data === YT.PlayerState.ENDED){
-    currentSong = (currentSong + 1) % songs.length;
+  if(event.data===YT.PlayerState.ENDED){
+    currentSong = (currentSong+1)%songs.length;
     player.loadVideoById(songs[currentSong]);
     updateNowPlaying();
   }
 }
-
-function updateNowPlaying(){
-  document.querySelector('.now-playing').textContent = 'Now Playing: Song ' + (currentSong+1);
+function updateNowPlaying() {
+  document.querySelector('.now-playing').textContent='Now Playing: Song '+(currentSong+1);
+}
+function playMusic() { if(player) player.playVideo(); }
+function skipToSecond() {
+  currentSong=1; player.loadVideoById(songs[currentSong]);
+  updateNowPlaying();
+  document.querySelector('.skip-btn').style.display='none';
 }
 
-function playMusic(){ if(player) player.playVideo(); }
-function skipToSecond(){ currentSong=1; player.loadVideoById(songs[currentSong]); updateNowPlaying(); document.querySelector('.skip-btn').style.display='none'; }
-
-// ASCII Flying Logo
+// =================== Logo & Effects ===================
 const logo = document.getElementById('flyingLogo');
 let logoX = Math.random()*(window.innerWidth-400);
-let logoY = Math.random()*(window.innerHeight-400);
+let logoY = Math.random()*(window.innerHeight-200);
 let velX = (Math.random()*2+1)*(Math.random()<0.5?1:-1);
 let velY = (Math.random()*2+1)*(Math.random()<0.5?1:-1);
-function moveLogo(){
+
+// Particle effects
+const particles = [];
+const maxParticles = 200;
+for(let i=0;i<maxParticles;i++) {
+  particles.push({x: Math.random()*window.innerWidth, y: Math.random()*window.innerHeight, vx: (Math.random()-0.5)*2, vy: (Math.random()-0.5)*2, size: Math.random()*2+1});
+}
+
+// Mouse interaction
+let mouseX=0, mouseY=0;
+let logoScale=1;
+
+// Animate particles
+function animateParticles() {
+  const c = document.getElementById('particleCanvas');
+  const ctx = c.getContext('2d');
+  c.width=window.innerWidth;
+  c.height=window.innerHeight;
+  ctx.fillStyle='rgba(0,0,0,0.2)';
+  ctx.fillRect(0,0,c.width,c.height);
+  particles.forEach(p => {
+    p.x+=p.vx; p.y+=p.vy;
+    if(p.x<0 || p.x>c.width) p.vx*=-1;
+    if(p.y<0 || p.y>c.height) p.vy*=-1;
+    ctx.beginPath();
+    ctx.arc(p.x,p.y,p.size,0,Math.PI*2);
+    ctx.fillStyle='rgba(0,255,0,0.5)';
+    ctx.fill();
+  });
+  requestAnimationFrame(animateParticles);
+}
+animateParticles();
+
+// Logo movement & interaction
+function moveLogo() {
   logoX+=velX; logoY+=velY;
-  if(logoX<=0 || logoX+400>=window.innerWidth) velX*=-1;
-  if(logoY<=0 || logoY+400>=window.innerHeight) velY*=-1;
+  if(logoX<=0 || logoX+200>=window.innerWidth) velX*=-1;
+  if(logoY<=0 || logoY+50>=window.innerHeight) velY*=-1;
+  // React to mouse proximity
+  const distX=mouseX-(logoX+100);
+  const distY=mouseY-(logoY+25);
+  const dist=Math.hypot(distX, distY);
+  if(dist<150) {
+    logoX+=distX*0.02;
+    logoY+=distY*0.02;
+  }
+  // Apply position & scale
   logo.style.left=logoX+'px';
   logo.style.top=logoY+'px';
+  logo.style.transform=`scale(${logoScale})`;
   requestAnimationFrame(moveLogo);
 }
 moveLogo();
-window.addEventListener('resize',()=>{ if(logoX+400>window.innerWidth) logoX=window.innerWidth-400; if(logoY+400>window.innerHeight) logoY=window.innerHeight-400; });
 
-// Clock
-function updateClock(){ const now=new Date(); const h=String(now.getHours()).padStart(2,'0'); const m=String(now.getMinutes()).padStart(2,'0'); const s=String(now.getSeconds()).padStart(2,'0'); document.getElementById('clock').textContent=`${h}:${m}:${s}`;}
-setInterval(updateClock,1000);
-updateClock();
-
-// HOA
-const hoaBtn = document.createElement('div');
-hoaBtn.className='hoa-btn';
-hoaBtn.textContent='HOA';
-hoaBtn.onclick=()=>{ document.getElementById('mainPage').style.display='none'; document.getElementById('hoaPage').style.display='flex'; };
-document.body.appendChild(hoaBtn);
-function backToMain(){ document.getElementById('hoaPage').style.display='none'; document.getElementById('mainPage').style.display='flex'; }
-
-// Owners Modal
-const ownersBtn = document.getElementById('ownersBtn');
-ownersBtn.onclick = ()=>{ document.getElementById('ownersModal').style.display='flex'; modalMatrix(); };
-function closeOwners(){ document.getElementById('ownersModal').style.display='none'; }
-function modalMatrix(){
-  const c = document.getElementById('modalMatrix'); const ctx=c.getContext('2d');
-  c.width=c.offsetWidth; c.height=c.offsetHeight;
-  const letters='01ABCDEFGHIJKLMNOPQRSTUVWXYZ@#$%^&*()*&^%';
-  const fontSize=14;
-  const cols=c.width/fontSize;
-  const drops=Array(Math.floor(cols)).fill(1);
-  function drawM(){
-    ctx.fillStyle='rgba(0,0,0,0.1)'; ctx.fillRect(0,0,c.width,c.height);
-    ctx.fillStyle='#00ff00'; ctx.font=fontSize+'px monospace';
-    for(let i=0;i<drops.length;i++){
-      const text=letters[Math.floor(Math.random()*letters.length)];
-      ctx.fillText(text,i*fontSize,drops[i]*fontSize);
-      if(drops[i]*fontSize>c.height && Math.random()>0.975) drops[i]=0;
-      drops[i]++;
-    }
-    requestAnimationFrame(drawM);
+// Mouse move handler for interaction
+window.addEventListener('mousemove', e => {
+  mouseX=e.clientX; mouseY=e.clientY;
+  // Play sound on hover
+  if(e.target.className.includes('display-box') || e.target.id==='ownersBtn') {
+    playHoverSound();
   }
-  drawM();
+});
+
+// Hover sound
+const hoverSound = new Audio('https://freesound.org/data/previews/512/512250_1022657-lq.mp3');
+function playHoverSound() {
+  hoverSound.currentTime=0; hoverSound.play();
 }
 
-// Entrance Click
+// Theme toggle
+const themeBtn = document.getElementById('themeToggle');
+let darkTheme=true;
+themeBtn.onclick=()=>{
+  darkTheme=!darkTheme;
+  if(darkTheme){
+    document.body.style.backgroundColor='black';
+  } else {
+    document.body.style.backgroundColor='#fff';
+  }
+};
+
+// Entrance click
 const enterScreen = document.getElementById('enterScreen');
-enterScreen.onclick = ()=>{
+enterScreen.onclick=()=>{
   enterScreen.style.display='none';
   document.getElementById('mainPage').style.display='flex';
   playMusic();
 };
 
-// Matrix Background
-const matrixCanvas = document.getElementById('matrix');
-const ctx = matrixCanvas.getContext('2d');
-matrixCanvas.width = window.innerWidth;
-matrixCanvas.height = window.innerHeight;
-const letters = '01ABCDEFGHIJKLMNOPQRSTUVWXYZ@#$%^&*()*&^%';
-const fontSize = 14;
-const columns = Math.floor(matrixCanvas.width/fontSize);
-const drops = Array(columns).fill(1);
-function drawMatrix(){
+// Matrix background
+const matrixCanvas=document.getElementById('matrix');
+const ctx=matrixCanvas.getContext('2d');
+function resizeCanvas() {
+  matrixCanvas.width=window.innerWidth;
+  matrixCanvas.height=window.innerHeight;
+}
+window.addEventListener('resize', resizeCanvas);
+resizeCanvas();
+
+const matrixLetters='01ABCDEFGHIJKLMNOPQRSTUVWXYZ@#$%^&*()*&^%';
+const fontSize=14;
+const cols=Math.floor(matrixCanvas.width/fontSize);
+const drops=Array(cols).fill(1);
+function drawMatrix() {
   ctx.fillStyle='rgba(0,0,0,0.1)';
   ctx.fillRect(0,0,matrixCanvas.width,matrixCanvas.height);
   ctx.fillStyle='#00ff00';
-  ctx.font = fontSize+'px monospace';
+  ctx.font=fontSize+'px monospace';
   for(let i=0;i<drops.length;i++){
-    const text = letters[Math.floor(Math.random()*letters.length)];
+    const text=matrixLetters[Math.floor(Math.random()*matrixLetters.length)];
     ctx.fillText(text,i*fontSize,drops[i]*fontSize);
     if(drops[i]*fontSize>matrixCanvas.height && Math.random()>0.975) drops[i]=0;
     drops[i]++;
@@ -308,14 +371,23 @@ function drawMatrix(){
   requestAnimationFrame(drawMatrix);
 }
 drawMatrix();
-window.addEventListener('resize',()=>{ matrixCanvas.width=window.innerWidth; matrixCanvas.height=window.innerHeight; });
-</script>
 
-<!-- YouTube Player (hidden) -->
-<div id="player"></div>
+// =================== Extra Effects ===================
+// Animate the ASCII logo's bounce & scale
+let scaleDirection=1;
+function animateLogo() {
+  // Pulsate
+  logoScale += 0.005*scaleDirection;
+  if(logoScale>1.2 || logoScale<0.8) scaleDirection*=-1;
+  // Apply movement
+  moveLogo();
+  requestAnimationFrame(animateLogo);
+}
+animateLogo();
+
+</script>
 </body>
 </html>
-
 
 
 
