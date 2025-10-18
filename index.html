@@ -23,14 +23,14 @@ body {
   cursor: crosshair;
 }
 
-/* Canvas for matrix effect */
+
 canvas { position:absolute; top:0; left:0; width:100%; height:100%; z-index:0; }
 
-/* Flying ASCII Logo */
+
 #flyingLogo {
   position: absolute;
   font-family: monospace;
-  font-size: 12px; /* Adjusted for full logo size */
+  font-size: 12px;
   color: #00ff00;
   text-shadow: 0 0 10px #00ff00, 0 0 20px #c0ffc0;
   pointer-events: none;
@@ -39,7 +39,7 @@ canvas { position:absolute; top:0; left:0; width:100%; height:100%; z-index:0; }
   line-height: 12px;
 }
 
-/* Entrance overlay */
+
 #enterScreen {
   position: fixed;
   top:0; left:0;
@@ -62,10 +62,10 @@ canvas { position:absolute; top:0; left:0; width:100%; height:100%; z-index:0; }
 #enterScreen span { text-shadow:0 0 10px #00ff00; animation:glow 2s infinite alternate; }
 @keyframes glow { from { text-shadow:0 0 10px #00ff00;} to{ text-shadow:0 0 20px #00ff00,0 0 40px #00ff00;} }
 
-/* Clock */
+
 #clock { position: fixed; top:10px; left:50%; transform:translateX(-50%); z-index:20; color:#00ff00; font-family:'Courier New', monospace; font-size:14px; text-shadow:0 0 5px #00ff00,0 0 10px #00ff00; }
 
-/* HOA Button */
+
 .hoa-btn {
   position: fixed;
   top: 40px;
@@ -84,7 +84,7 @@ canvas { position:absolute; top:0; left:0; width:100%; height:100%; z-index:0; }
 }
 .hoa-btn:hover { transform: translateX(-50%) scale(1.05); box-shadow: 0 0 20px #00ff00; }
 
-/* Main Page */
+
 #mainPage { display: none; flex-direction: column; align-items: center; justify-content: center; width: 100%; height: 100%; z-index:2; }
 h1 { font-size:2em; text-shadow:0 0 10px #00ff00; margin-bottom:20px; animation:glow 2s infinite alternate, glitchText 5s infinite; text-align:center; }
 @keyframes glitchText { 0% { transform: translate(0,0); } 20% { transform: translate(-2px,2px); } 40% { transform: translate(2px,-2px); } 60% { transform: translate(-1px,1px); } 80% { transform: translate(1px,-1px); } 100% { transform: translate(0,0); } }
@@ -96,23 +96,23 @@ h1 { font-size:2em; text-shadow:0 0 10px #00ff00; margin-bottom:20px; animation:
 
 @keyframes textglow { from{ text-shadow:0 0 5px #00ff00;color:#00ff00;} to{ text-shadow:0 0 25px #00ff00,0 0 40px #c0ffc0;color:#c0ffc0;} }
 
-/* Modal */
+
 .modal { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.9); z-index:10; justify-content:center; align-items:center; }
 .modal-content { background:rgba(0,0,0,0.95); border:2px solid #00ff00; padding:30px; border-radius:10px; color:#00ff00; font-family:'Courier New', monospace; text-align:center; position:relative; box-shadow:0 0 30px #00ff00; overflow:hidden; }
 .modal-content canvas { position:absolute; top:0; left:0; width:100%; height:100%; z-index:0; }
 .close-btn { position:absolute; top:10px; right:15px; font-size:18px; cursor:pointer; color:#00ff00; font-weight:bold; z-index:2; }
 .close-btn:hover { color:#c0ffc0; }
 
-/* Skip Song Button */
+
 .skip-btn { position: fixed; bottom:60px; right:20px; z-index:20; padding:10px 20px; border:2px solid #00ff00; color:#00ff00; background: rgba(0,0,0,0.7); cursor:pointer; font-family:'Courier New', monospace; border-radius:5px; text-align:center; }
 .skip-btn:hover { background: rgba(0,0,0,0.9); box-shadow:0 0 20px #00ff00,0 0 40px #00ff00; animation:glitch 0.5s infinite; }
 @keyframes glitch {0% { transform: translate(0,0) skew(0deg);}20% { transform: translate(-2px,2px) skew(-2deg);}40% { transform: translate(2px,-2px) skew(2deg);}60% { transform: translate(-1px,1px) skew(-1deg);}80% { transform: translate(1px,-1px) skew(1deg);}100% { transform: translate(0,0) skew(0deg);} }
 
-/* Now Playing */
+
 .now-playing { position:fixed; top:40px; right:20px; z-index:20; padding:5px 15px; border:2px solid #00ff00; border-radius:5px; background: rgba(0,0,0,0.7); color:#00ff00; font-family:'Courier New', monospace; font-size:12px; text-align:center; animation:neonFlicker 1.5s infinite; }
 @keyframes neonFlicker {0%,100%{opacity:1;text-shadow:0 0 5px #00ff00,0 0 10px #00ff00;}50%{opacity:0.8;text-shadow:0 0 20px #00ff00,0 0 30px #c0ffc0;}25%,75%{opacity:0.9;text-shadow:0 0 10px #00ff00,0 0 20px #00ff00;}}
 
-/* HOA Section */
+
 #hoaPage { display:none; flex-direction: column; align-items:center; justify-content:center; width:100%; height:100%; z-index:2; }
 .hoa-text-box { width:400px; padding:15px; background:rgba(0,0,0,0.7); border:2px solid #00ff00; border-radius:10px; box-shadow:0 0 15px #00ff00; color:#00ff00; text-align:center; font-size:14px; user-select:none; pointer-events:none; animation:textglow 3s infinite alternate; font-family:'Courier New', monospace; white-space: pre; }
 .back-btn { position:fixed; left:20px; top:20px; padding:10px 20px; border:2px solid #00ff00; color:#00ff00; background:rgba(0,0,0,0.7); cursor:pointer; font-family:'Courier New', monospace; border-radius:5px; text-align:center; }
@@ -123,7 +123,7 @@ h1 { font-size:2em; text-shadow:0 0 10px #00ff00; margin-bottom:20px; animation:
 
 <canvas id="matrix"></canvas>
 
-<!-- Flying ASCII Logo (Full Logo) -->
+
 <pre id="flyingLogo">
 ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⣴⠾⣿⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⡿⠻⢶⣄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
 ⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣤⠞⠋⠀⢠⡿⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⢿⡄⠀⠉⠻⣦⡀⠀⠀⠀⠀⠀⠀⠀⠀
@@ -188,7 +188,7 @@ h1 { font-size:2em; text-shadow:0 0 10px #00ff00; margin-bottom:20px; animation:
 <div class="skip-btn" onclick="skipToSecond()">Goto Song 2</div>
 <div class="now-playing">Now Playing: Song 1</div>
 
-<!-- Load YouTube Iframe API -->
+
 <script src="https://www.youtube.com/iframe_api"></script>
 <script>
 let player;
@@ -222,7 +222,7 @@ function updateNowPlaying(){
 function playMusic(){ if(player) player.playVideo(); }
 function skipToSecond(){ currentSong=1; player.loadVideoById(songs[currentSong]); updateNowPlaying(); document.querySelector('.skip-btn').style.display='none'; }
 
-// ASCII Flying Logo
+
 const logo = document.getElementById('flyingLogo');
 let logoX = Math.random()*(window.innerWidth-400);
 let logoY = Math.random()*(window.innerHeight-400);
@@ -239,12 +239,12 @@ function moveLogo(){
 moveLogo();
 window.addEventListener('resize',()=>{ if(logoX+400>window.innerWidth) logoX=window.innerWidth-400; if(logoY+400>window.innerHeight) logoY=window.innerHeight-400; });
 
-// Clock
+
 function updateClock(){ const now=new Date(); const h=String(now.getHours()).padStart(2,'0'); const m=String(now.getMinutes()).padStart(2,'0'); const s=String(now.getSeconds()).padStart(2,'0'); document.getElementById('clock').textContent=`${h}:${m}:${s}`;}
 setInterval(updateClock,1000);
 updateClock();
 
-// HOA
+
 const hoaBtn = document.createElement('div');
 hoaBtn.className='hoa-btn';
 hoaBtn.textContent='HOA';
@@ -252,7 +252,7 @@ hoaBtn.onclick=()=>{ document.getElementById('mainPage').style.display='none'; d
 document.body.appendChild(hoaBtn);
 function backToMain(){ document.getElementById('hoaPage').style.display='none'; document.getElementById('mainPage').style.display='flex'; }
 
-// Owners Modal
+
 const ownersBtn = document.getElementById('ownersBtn');
 ownersBtn.onclick = ()=>{ document.getElementById('ownersModal').style.display='flex'; modalMatrix(); };
 function closeOwners(){ document.getElementById('ownersModal').style.display='none'; }
@@ -277,7 +277,7 @@ function modalMatrix(){
   drawM();
 }
 
-// Entrance Click
+
 const enterScreen = document.getElementById('enterScreen');
 enterScreen.onclick = ()=>{
   enterScreen.style.display='none';
@@ -285,7 +285,7 @@ enterScreen.onclick = ()=>{
   playMusic();
 };
 
-// Matrix Background
+
 const matrixCanvas = document.getElementById('matrix');
 const ctx = matrixCanvas.getContext('2d');
 matrixCanvas.width = window.innerWidth;
@@ -311,7 +311,7 @@ drawMatrix();
 window.addEventListener('resize',()=>{ matrixCanvas.width=window.innerWidth; matrixCanvas.height=window.innerHeight; });
 </script>
 
-<!-- YouTube Player (hidden) -->
+
 <div id="player"></div>
 </body>
 </html>
